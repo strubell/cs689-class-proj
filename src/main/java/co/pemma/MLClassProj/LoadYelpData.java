@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.eclipsesource.json.JsonObject;
 
@@ -28,13 +29,16 @@ public class LoadYelpData {
 		}
 
 		System.out.println(subsetUsers.size() + " Users with atleast " + MIN_REVIEW_COUNT + " reviews");
+		
+//		printReviews(subsetUsers);
+
 	}
 
 	public static ArrayList<User> readUserReviews()
 	{
-		ArrayList<User> users = new ArrayList<User>();		
+		HashMap<String, User> users = new HashMap<String, User>();
 		String file =  "yelp_phoenix_academic_dataset/yelp_academic_dataset_review.json" ;
-
+		
 		User user;
 		JsonObject jsonObj;
 		String id;
@@ -48,17 +52,17 @@ public class LoadYelpData {
 			{				
 				jsonObj = JsonObject.readFrom(line);
 				id = jsonObj.get("user_id").toString();
-				user = new User(id);
 
-				if(users.contains(user))
+				if(users.containsKey(id))
 				{
-					user = users.get(users.indexOf(user));
+					user = users.get(id);
 					user.addReview(new Review(jsonObj));
 				}
 				else
 				{
+					user = new User(id);
 					user.addReview(new Review(jsonObj));
-					users.add(user);
+					users.put(id, user);
 				}
 			}
 
@@ -69,7 +73,7 @@ public class LoadYelpData {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		return users;
+		return new ArrayList<User>(users.values());
 	}
 
 	public static void printReviews(ArrayList<User> users)
