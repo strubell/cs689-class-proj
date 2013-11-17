@@ -9,72 +9,94 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.HashSet;
 
 import com.eclipsesource.json.JsonObject;
 
 public class LoadYelpData {
 
+	public static final int MIN_REVIEW_COUNT = 5;
+
 	public static void main(String[] args) throws IOException 
 	{	
-		printReviews(readYelpReviews());
+
+		ArrayList<User> allUsers = readUserReviews();
+		ArrayList<User> subsetUsers = new ArrayList<User>();
+
+		for (User user: allUsers)
+		{
+			if ( user.size() >= MIN_REVIEW_COUNT)
+				subsetUsers.add(user);
+		}
+
+		System.out.println(subsetUsers.size() + " Users with atleast " + MIN_REVIEW_COUNT + " reviews");
 	}
-	
-	public static ArrayList<ReviewObject> readYelpReviews()
+
+	public static ArrayList<User> readUserReviews()
 	{
-		ArrayList<ReviewObject> reviews =  new ArrayList<ReviewObject>();
-		HashMap<String, Double> userCounts = new HashMap<String, Double>();
-		
+		ArrayList<User> users = new ArrayList<User>();		
 		String file =  "yelp_phoenix_academic_dataset/yelp_academic_dataset_review.json" ;
-		
+
+		User user;
+		JsonObject jsonObj;
+		String id;
+
+
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
 			String line = "";
 			while ((line = reader.readLine()) != null)
 			{				
-				ReviewObject review = new ReviewObject(JsonObject.readFrom(line));
-				reviews.add(review);
-				if(userCounts.containsKey(review.getUserId()))
+				jsonObj = JsonObject.readFrom(line);
+				id = jsonObj.get("user_id").toString();
+				user = new User(id);
+
+				if(users.contains(user))
 				{
-					userCounts.put(review.getUserId().toString(), userCounts.get(review) + 1.0);
+					user = users.get(users.indexOf(user));
+					user.addReview(new Review(jsonObj));
 				}
 				else
 				{
-					userCounts.put(review.getUserId().toString(), 1.0);
+					user.addReview(new Review(jsonObj));
+					users.add(user);
 				}
 			}
 
-			System.out.println("read in " + reviews.size() + " reviews.");
+			System.out.println("read in reviews of " + users.size() + " users");
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		return reviews;
-
+		return users;
 	}
-	
-	public static void printReviews(ArrayList<ReviewObject> reviews)
+
+	public static void printReviews(ArrayList<User> users)
 	{
+		String dir = "/run/media/pv/NTFS";
 		PrintWriter writer;
 		File file;
-		for(ReviewObject review : reviews)
+		for(User user : users)
 		{			
-			try {					
-					file = new File( "reviews/" + review.getUserId() + "/" + review.getDate() + ".txt");
+			for (Review review : user.getReviews())
+			{
+				try {					
+					file = new File( dir + "/reviews/" + user.getUserId() + "/" + review.getDate() + ".txt");
 					file.getParentFile().mkdirs();
 					writer = new PrintWriter(file, "UTF-8");
 					writer.println(review.getText());
 					writer.close();
-				
-			} catch (FileNotFoundException e) {
-				System.out.println("io failure" + e);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} 
+
+				} catch (FileNotFoundException e) {
+					System.out.println("io failure" + e);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} 
+			}
 		}
 		System.out.println("Successfully wrote data");
 	}
