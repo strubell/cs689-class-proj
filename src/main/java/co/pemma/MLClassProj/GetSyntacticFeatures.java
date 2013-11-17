@@ -8,6 +8,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import cc.factorie.app.nlp.parse.*;
 
 public class GetSyntacticFeatures {
 
@@ -23,12 +26,17 @@ public class GetSyntacticFeatures {
 		int startIndex = 0;
 		int numToTake = 5;
 		
+		int parseDomainSize = ParseTreeLabelDomain.categories.size();
+		int posDomainSize = PennPosLabelDomain.categories.size();
+		
+		HashMap<String,Integer> posTotals = new HashMap<>(posDomainSize);
+		HashMap<String,Integer> parseTotals = new HashMap<>(parseDomainSize);
+		
 		int windowSize = 3;
 		int buffSize = windowSize/2;
-		
-		String[] wordWindow  = new String[windowSize];
-		String[] posWindow  = new String[windowSize];
-		String[] depWindow  = new String[windowSize];
+		ArrayList<String> wordWindow  = new ArrayList<String>(windowSize);
+		ArrayList<String> posWindow  = new ArrayList<String>(windowSize);
+		ArrayList<String> depWindow  = new ArrayList<String>(windowSize);
 		
 		int reviewCount = 1;
 		String line = "";
@@ -47,7 +55,6 @@ public class GetSyntacticFeatures {
 					connection.shutdownOutput();
 					
 					// parse result
-					// TODO clean up review text: remove "\n"s, gather those separately
 					BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 					System.out.println((System.currentTimeMillis() - t0) + " ms");
 		
@@ -75,6 +82,10 @@ public class GetSyntacticFeatures {
 //						posWindow[i] = "";
 //						depWindow[i] = "";
 //					}
+					
+					while((line = reader.readLine()) != null){
+						
+					}
 					
 					reviewCount++;
 				} catch (IOException e) {
