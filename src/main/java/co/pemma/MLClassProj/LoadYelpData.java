@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import com.eclipsesource.json.JsonObject;
 
@@ -42,6 +40,7 @@ public class LoadYelpData {
 		String id;
 
 
+		System.out.print("Reading in data...");
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
 			String line = "";

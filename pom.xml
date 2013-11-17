@@ -27,6 +27,18 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>iesl.cs.umass.edu2</id>
+			<name>IESL repository</name>
+			<url>https://dev-iesl.cs.umass.edu/nexus/content/repositories/public/</url>
+		</repository>
+		<repository>
+			<id>iesl.cs.umass.edu3</id>
+			<name>IESL repository</name>
+			<url>https://dev-iesl.cs.umass.edu/nexus/content/repositories/public-snapshots/</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -67,6 +79,12 @@
 			<version>1.0-SNAPSHOT</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/res/minimal-json.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>cc.factorie</groupId>
+			<artifactId>factorie</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

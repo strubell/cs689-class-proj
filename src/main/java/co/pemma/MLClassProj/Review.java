@@ -26,8 +26,8 @@ public class Review {
 		this.stars = stars;
 	}
 
-	public JsonValue getText() {
-		return text;
+	public String getText() {
+		return text.asString().replaceAll("(\\n|\\)", " ");
 	}
 
 	public void setText(JsonValue text) {
