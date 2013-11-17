@@ -30,7 +30,7 @@ public class LoadYelpData {
 				subsetUsers.add(user);
 		}
 
-		System.out.println(subsetUsers.size() + " Users with atleast " + MIN_REVIEW_COUNT + " reviews");
+		System.out.println(subsetUsers.size() + " Users with at least " + MIN_REVIEW_COUNT + " reviews");
 		
 		printReviews(subsetUsers);
 
