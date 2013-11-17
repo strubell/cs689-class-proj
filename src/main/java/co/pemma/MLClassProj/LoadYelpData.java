@@ -13,7 +13,6 @@ import java.util.HashMap;
 
 import com.eclipsesource.json.JsonObject;
 
-
 public class LoadYelpData {
 
 	public static void main(String[] args) throws IOException 
