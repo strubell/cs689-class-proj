@@ -27,7 +27,7 @@ public class Review {
 	}
 
 	public String getText() {
-		return text.asString().replaceAll("(\\n|\\)", " ");
+		return text.asString().replaceAll("(\\n|\\\\)", " ");
 	}
 
 	public void setText(JsonValue text) {
