@@ -39,7 +39,6 @@ public class LoadYelpData {
 		JsonObject jsonObj;
 		String id;
 
-
 		System.out.print("Reading in data...");
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
