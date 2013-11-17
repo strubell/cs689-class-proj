@@ -7,13 +7,11 @@ import java.io.IOException;
 
 import com.eclipsesource.json.JsonObject;
 
-
 public class LoadYelpData {
 
 	public static void main(String[] args) throws IOException {
 		String file =  "yelp_phoenix_academic_dataset/yelp_academic_dataset_review.json" ;
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));	
+		try(BufferedReader reader = new BufferedReader(new FileReader(file))){
 
 			String line ="";
 			while ((line = reader.readLine()) != null)
