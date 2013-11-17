@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Cluster {
+public class ANAL {
 
 	
-	public static void clusterAnalysis(String fileName)
+	public static void ANAL(String fileName)
 	{
 		BufferedReader reader = null;
 		HashMap<Integer, Integer> classCount = new HashMap<Integer, Integer>();

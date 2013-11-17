@@ -14,7 +14,9 @@ import com.eclipsesource.json.JsonObject;
 
 public class LoadYelpData {
 
-	public static final int MIN_REVIEW_COUNT = 5;
+	public static final int MIN_REVIEW_COUNT = 10;
+	public static final String OUTPUT_DIR = "/NTFS";
+
 
 	public static void main(String[] args) throws IOException 
 	{	
@@ -30,7 +32,7 @@ public class LoadYelpData {
 
 		System.out.println(subsetUsers.size() + " Users with atleast " + MIN_REVIEW_COUNT + " reviews");
 		
-//		printReviews(subsetUsers);
+		printReviews(subsetUsers);
 
 	}
 
@@ -78,7 +80,6 @@ public class LoadYelpData {
 
 	public static void printReviews(ArrayList<User> users)
 	{
-		String dir = "/run/media/pv/NTFS";
 		PrintWriter writer;
 		File file;
 		for(User user : users)
@@ -86,7 +87,7 @@ public class LoadYelpData {
 			for (Review review : user.getReviews())
 			{
 				try {					
-					file = new File( dir + "/reviews/" + user.getUserId() + "/" + review.getDate() + ".txt");
+					file = new File( OUTPUT_DIR + "/reviews_" + MIN_REVIEW_COUNT + "/" + user.getUserId() + "/" + review.getDate() + ".txt");
 					file.getParentFile().mkdirs();
 					writer = new PrintWriter(file, "UTF-8");
 					writer.println(review.getText());
