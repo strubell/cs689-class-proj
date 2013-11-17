@@ -1,69 +1,70 @@
 package co.pemma.MLClassProj;
 
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 
 public class ReviewObject {
-	String userId;
-	double stars;
-	String text;
-	String businessId;
-	String date;
+	JsonValue userId;
+	JsonValue stars;
+	JsonValue text;
+	JsonValue businessId;
+	JsonValue date;
 	
-	public ReviewObject(String user_id, String business_id, String date, String text, double stars)
-	{
-		this.userId = user_id;
-		this.businessId = business_id;
-		this.date = date;
-		this.text = text;
-		this.stars = stars;
-	}
+//	public ReviewObject(String user_id, String business_id, String date, String text, double stars)
+//	{
+//		this.userId = user_id;
+//		this.businessId = business_id;
+//		this.date = date;
+//		this.text = text;
+//		this.stars = stars;
+//	}
 
 	public ReviewObject(JsonObject jsonObject)
 	{
-		this.userId = jsonObject.get("user_id").toString();
-		this.businessId = jsonObject.get("business_id").toString();
-		this.text = jsonObject.get("text").toString();
-		this.stars = jsonObject.get("stars").asDouble();
-		this.date = jsonObject.get("date").toString();
+		this.userId = jsonObject.get("user_id");
+		this.businessId = jsonObject.get("business_id");
+		this.text = jsonObject.get("text");
+		this.stars = jsonObject.get("stars");
+		this.date = jsonObject.get("date");
 	}
 
-	public String getUserId() {
+	public JsonValue getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(JsonValue userId) {
 		this.userId = userId;
 	}
 
-	public double getStars() {
+	public JsonValue getStars() {
 		return stars;
 	}
 
-	public void setStars(double stars) {
+	public void setStars(JsonValue stars) {
 		this.stars = stars;
 	}
 
-	public String getText() {
+	public JsonValue getText() {
 		return text;
 	}
 
-	public void setText(String text) {
+	public void setText(JsonValue text) {
 		this.text = text;
 	}
 
-	public String getBusinessId() {
+	public JsonValue getBusinessId() {
 		return businessId;
 	}
 
-	public void setBusinessId(String businessId) {
+	public void setBusinessId(JsonValue businessId) {
 		this.businessId = businessId;
 	}
 
-	public String getDate() {
+	public JsonValue getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(JsonValue date) {
 		this.date = date;
 	}
 	
