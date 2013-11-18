@@ -35,6 +35,8 @@ public class GetSyntacticFeatures {
 	private static final int BIG_ARR_SIZE = 1000;
 
 	private static final String OUTPUT_DIR = "output";
+	
+	private static final int USER_REVIEW_THRESHOLD = 250;
 
 	private static final String[] FUNCTION_TAGS = { 
 		"CC", 	// Coordinating conjunction
@@ -87,7 +89,7 @@ public class GetSyntacticFeatures {
 			VectorWritable vec = new VectorWritable();
 
 			long t0 = System.currentTimeMillis();
-			List<User> userList = LoadYelpData.readUserReviews();
+			List<User> userList = LoadYelpData.readUserReviews(USER_REVIEW_THRESHOLD);
 			System.out.println(System.currentTimeMillis() - t0 + " ms");
 
 			int startIndex = 0;
@@ -114,24 +116,23 @@ public class GetSyntacticFeatures {
 			for (User user : userList.subList(startIndex, startIndex + numToTake)) {
 				for (Review review : user.reviews) {
 
-					
-					
 					// open connection to Factorie server (expects it's already running)
 					try (Socket connection = new Socket("localhost", 3228)) {
 
 						PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(connection.getOutputStream())), true);
 
 						// write review to server
-						System.out.format("Processing review %d... ", reviewCount);
-						t0 = System.currentTimeMillis();
+						if(reviewCount % 100 == 0){
+							System.out.format("Processing review %d... ", reviewCount);
+							System.out.println(review.getText());
+						}
+						//t0 = System.currentTimeMillis();
 						writer.println(review.getText());
 						connection.shutdownOutput();
 
-						System.out.println(review.getText());
-
 						// parse result
 						BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-						System.out.println((System.currentTimeMillis() - t0) + " ms");
+						//System.out.println((System.currentTimeMillis() - t0) + " ms");
 
 						while ((line = reader.readLine()) != null) {
 							if (!line.equals("")) {
@@ -177,12 +178,12 @@ public class GetSyntacticFeatures {
 						PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(connection.getOutputStream())), true);
 
 						// write review to server
-						System.out.format("Processing review %d... ", reviewCount);
-						//t0 = System.currentTimeMillis();
+						if(reviewCount % 100 == 0){
+							System.out.format("Processing review %d... ", reviewCount);
+							System.out.println(review.getText());
+						}
 						writer.println(review.getText());
 						connection.shutdownOutput();
-
-						System.out.println(review.getText());
 
 						// parse result
 						BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -254,9 +255,10 @@ public class GetSyntacticFeatures {
 						}
 
 						// now write the results to Mahout-format file
-						NamedVector featureVector = new NamedVector(new DenseVector(allFreqs), "r" + reviewCount);
+						String vectorKey = user.getUserId() + "/" + reviewCount;
+						NamedVector featureVector = new NamedVector(new DenseVector(allFreqs), vectorKey);
 						vec.set(featureVector);
-						mahoutWriter.append(new Text(featureVector.getName()), vec);
+						mahoutWriter.append(new Text(vectorKey), vec);
 						
 						for(int m = 0; m < allFreqs.length; ++m){
 							System.out.print(allFreqs[m] + " ");

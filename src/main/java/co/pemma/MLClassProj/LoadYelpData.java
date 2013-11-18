@@ -14,40 +14,34 @@ import com.eclipsesource.json.JsonObject;
 
 public class LoadYelpData {
 
-	public static final int MIN_REVIEW_COUNT = 10;
+	public static final int MIN_REVIEW_COUNT = 250;
 	public static final String OUTPUT_DIR = "/NTFS";
 
 
 	public static void main(String[] args) throws IOException 
 	{	
-
-		ArrayList<User> allUsers = readUserReviews();
-		ArrayList<User> subsetUsers = new ArrayList<User>();
-
-		for (User user: allUsers)
-		{
-			if ( user.size() >= MIN_REVIEW_COUNT)
-				subsetUsers.add(user);
-		}
+		ArrayList<User> subsetUsers = readUserReviews(MIN_REVIEW_COUNT);
 
 		System.out.println(subsetUsers.size() + " Users with at least " + MIN_REVIEW_COUNT + " reviews");
 		
 		printReviews(subsetUsers);
 
 	}
+	
+	public static ArrayList<User> readUserReviews(){
+		return readUserReviews(0);
+	}
 
-	public static ArrayList<User> readUserReviews()
+	public static ArrayList<User> readUserReviews(int minReviewCount)
 	{
 		HashMap<String, User> users = new HashMap<String, User>();
 		String file =  "yelp_phoenix_academic_dataset/yelp_academic_dataset_review.json" ;
-		
-		User user;
-		JsonObject jsonObj;
-		String id;
 
 		System.out.print("Reading in data...");
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-
+			User user;
+			JsonObject jsonObj;
+			String id;
 			String line = "";
 			while ((line = reader.readLine()) != null)
 			{				
@@ -67,14 +61,26 @@ public class LoadYelpData {
 				}
 			}
 
-			System.out.println("read in reviews of " + users.size() + " users");
+			System.out.print(" read in reviews of " + users.size() + " users...");
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		return new ArrayList<User>(users.values());
+		
+		
+		if(minReviewCount > 0){
+			ArrayList<User> thresholdUserList = new ArrayList<>();
+			for(User user : users.values()){
+				if(user.size() >= minReviewCount)
+					thresholdUserList.add(user);
+			}
+			System.out.println(" keeping " + thresholdUserList.size() + " users with at least " + minReviewCount + " reviews.");
+			return thresholdUserList;
+		}
+		else
+			return new ArrayList<User>(users.values());
 	}
 
 	public static void printReviews(ArrayList<User> users)
