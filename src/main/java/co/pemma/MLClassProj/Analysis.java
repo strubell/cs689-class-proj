@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ANALysis {
+public class Analysis {
 
 	
-	public static void ANALysis(String fileName)
+	public static void computeScores(String fileName)
 	{
 		BufferedReader reader = null;
 		HashMap<Integer, Integer> classCount = new HashMap<Integer, Integer>();
