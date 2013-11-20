@@ -179,8 +179,8 @@ public class GetSyntacticFeatures {
 
 						// write review to server
 						if(reviewCount % 100 == 0){
-							System.out.format("Processing review %d... ", reviewCount);
-							System.out.println(review.getText());
+							System.out.format("Processing review %d... \n", reviewCount);
+							//System.out.println(review.getText());
 						}
 						writer.println(review.getText());
 						connection.shutdownOutput();
@@ -260,10 +260,12 @@ public class GetSyntacticFeatures {
 						vec.set(featureVector);
 						mahoutWriter.append(new Text(vectorKey), vec);
 						
-						for(int m = 0; m < allFreqs.length; ++m){
-							System.out.print(allFreqs[m] + " ");
+						if(reviewCount % 100 == 0){
+							for(int m = 0; m < allFreqs.length; ++m){
+								System.out.print(allFreqs[m] + " ");
+							}
+							System.out.println();
 						}
-						System.out.println("\n\n");
 						
 						reviewCount++;
 					} catch (IOException e) {
