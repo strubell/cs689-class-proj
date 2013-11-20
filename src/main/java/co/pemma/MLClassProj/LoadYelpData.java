@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.eclipsesource.json.JsonObject;
 
@@ -17,7 +18,8 @@ public class LoadYelpData {
 	public static final int MIN_REVIEW_COUNT = 250;
 	public static final String OUTPUT_DIR = "/NTFS";
 
-
+	private static List<User> yelpReviews;
+	
 	public static void main(String[] args) throws IOException 
 	{	
 		ArrayList<User> subsetUsers = readUserReviews(MIN_REVIEW_COUNT);
@@ -30,6 +32,18 @@ public class LoadYelpData {
 	
 	public static ArrayList<User> readUserReviews(){
 		return readUserReviews(0);
+	}
+	
+	/**
+	 * Return a list of Yelp reviews by users who have written > MIN_REVIEW_COUNT
+	 * reviews, reading from the data file if necessary.
+	 * 
+	 * @return List of Yelp reviews (by User)
+	 */
+	public static List<User> getYelpReviews(){
+		if(yelpReviews == null)
+			yelpReviews = LoadYelpData.readUserReviews(MIN_REVIEW_COUNT);
+		return yelpReviews;
 	}
 
 	public static ArrayList<User> readUserReviews(int minReviewCount)
