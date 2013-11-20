@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-#
+# Command line parameter is FULL path to models directory
 #
 
 FAC_CP="res/*"
 #FAC_CP="$HOME/.m2/repository/cc/factorie/factorie/1.0-SNAPSHOT/factorie-1.0-SNAPSHOT.jar"
-MODEL_DIR="file:///Users/strubell/Documents/research/models"
+MODEL_DIR="file://$1"
 POS_MODEL="OntonotesForwardPosTagger.factorie"
 PARSE_MODEL="OntonotesTransitionBasedParser.factorie"
 MEMORY="2g"
