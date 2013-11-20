@@ -213,10 +213,10 @@ public class GetSyntacticFeatures {
 
 	private static void normalizeSyntaxVector(double[] syntaxVector) 
 	{
-		
+
 	}
-	
-	
+
+
 	//	// Yules K, frequency of once used, twice used etc words [11]
 	//	private double[] vocabularyRichness(String word)
 
@@ -226,15 +226,15 @@ public class GetSyntacticFeatures {
 	//	private double[] syntaxCategoryPairs(String word)
 
 	public static void main(String[] args) {
-//		double[] syntaxVector = new double[SYNTAX_FEATURE_COUNT];
-//
-//		syntaxFeatures("Pop.", syntaxVector);
-//
-//
-//		for (int i = 0; i < syntaxVector.length; i++)
-//		{
-//			System.out.print(syntaxVector[i] +", ");
-//		}
+		//		double[] syntaxVector = new double[SYNTAX_FEATURE_COUNT];
+		//
+		//		syntaxFeatures("Pop.", syntaxVector);
+		//
+		//
+		//		for (int i = 0; i < syntaxVector.length; i++)
+		//		{
+		//			System.out.print(syntaxVector[i] +", ");
+		//		}
 
 		GetSyntacticFeatures thisClass = new GetSyntacticFeatures();
 		thisClass.functionWords();
@@ -288,6 +288,7 @@ public class GetSyntacticFeatures {
 											} else {
 												functionTotals.put(lowerWord, 1.0);
 											}
+
 										}
 									}
 								}
@@ -314,6 +315,7 @@ public class GetSyntacticFeatures {
 			Map<String, Double> parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
 			Map<String, Double> functionPerDoc = Util.newMapFromKeySet(this.functionTotals.keySet(), 0.0);
 			double[] syntaxVector;
+
 			String line;
 			while((line = factorieOutput.readLine()) != null){
 				// create vector to store syntactic features
@@ -340,6 +342,7 @@ public class GetSyntacticFeatures {
 								parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
 								functionPerDoc = Util.newMapFromKeySet(functionTotals.keySet(), 0.0);
 								syntaxVector = new double[SYNTAX_FEATURE_COUNT];
+
 							}
 							
 							String word = splitLine[WORD_IDX+2];
@@ -360,9 +363,7 @@ public class GetSyntacticFeatures {
 							lastUser = user;
 						}
 					}
-				}
-	
-				
+				}	
 			} 
 		} catch (IOException e){
 			//TODO auto-generated catch block
@@ -377,8 +378,8 @@ public class GetSyntacticFeatures {
 		
 		double[] posFreqs = new double[POS_TAGS.length];
 		double[] depFreqs = new double[PARSE_LABELS.length];
-		double[] funcFreqs = new double[numObservedFuncWords];
-		double[] allFreqs = new double[POS_TAGS.length+PARSE_LABELS.length+numObservedFuncWords];
+		double[] funcFreqs = new double[numObservedFuncWords]; // make this a variable?
+		double[] allFreqs = new double[POS_TAGS.length + PARSE_LABELS.length + numObservedFuncWords + syntaxVector.length];
 
 		// populate feature vector(s)
 		int i = 0;
@@ -413,7 +414,7 @@ public class GetSyntacticFeatures {
 			allFreqs[i+j+k] = freq;
 			k++;
 		}
-		
+
 		for(int l = 0; l < syntaxVector.length; l++)
 		{
 			allFreqs[i+j+k+l] = syntaxVector[l];
@@ -435,5 +436,6 @@ public class GetSyntacticFeatures {
 			//TODO auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 }
