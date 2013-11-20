@@ -42,8 +42,6 @@ public class GetSyntacticFeatures {
 	private static final int PUNCTUATION = 63;
 	private static final int SPEACIAL_CHARS = 74;
 
-
-
 	private static final int BIG_ARR_SIZE = 1000;
 
 	private static final String OUTPUT_DIR = "output";
