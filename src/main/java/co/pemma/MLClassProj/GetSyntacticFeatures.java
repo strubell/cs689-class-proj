@@ -213,9 +213,33 @@ public class GetSyntacticFeatures {
 
 	private static void normalizeSyntaxVector(double[] syntaxVector) 
 	{
+		double words = syntaxVector[WORD_COUNT];
+		double chars = syntaxVector[WORD_COUNT + 1];
 
+		// normalize word shapes
+		for (int i = 0; i < 5; i++)
+			syntaxVector[WORD_SHAPE + i] = syntaxVector[WORD_SHAPE + i] / words;
+
+		// normalize word length frequency
+		for (int i = 0; i < 21; i++)
+			syntaxVector[WORD_LENGTH_FREQ + i] = syntaxVector[WORD_LENGTH_FREQ + i] / words;
+
+		// normalize digit counts
+		for (int i = 0; i < 10; i++)
+			syntaxVector[DIGITS + i] = syntaxVector[DIGITS + i] / chars;
+
+		// normalize letter counts
+		for (int i = 0; i < 26; i++)
+			syntaxVector[LETTERS + i] = syntaxVector[LETTERS + i] / chars;
+
+		// normalize punctuation counts
+		for (int i = 0; i < 11; i++)
+			syntaxVector[PUNCTUATION + i] = syntaxVector[PUNCTUATION + i] / chars;
+
+		// normalize special char counts
+		for (int i = 0; i < 21; i++)
+			syntaxVector[SPECIAL_CHARS + i] = syntaxVector[SPECIAL_CHARS + i] / chars;
 	}
-
 
 	//	// Yules K, frequency of once used, twice used etc words [11]
 	//	private double[] vocabularyRichness(String word)
@@ -307,7 +331,6 @@ public class GetSyntacticFeatures {
 		return new BufferedReader(new FileReader(factorieFile));
 	}
 	
-
 	public void functionWords(){
 		try(BufferedReader factorieOutput = getFactorieReader()){
 			// initialize per-document counts using (keys of) existing data structures
@@ -415,6 +438,7 @@ public class GetSyntacticFeatures {
 			k++;
 		}
 
+		normalizeSyntaxVector(syntaxVector);
 		for(int l = 0; l < syntaxVector.length; l++)
 		{
 			allFreqs[i+j+k+l] = syntaxVector[l];
