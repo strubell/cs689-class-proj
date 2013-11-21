@@ -21,6 +21,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 import org.apache.mahout.math.DenseVector;
+import org.apache.mahout.math.NamedVector;
 import org.apache.mahout.math.VectorWritable;
 
 public class GetSyntacticFeatures {
@@ -28,6 +29,7 @@ public class GetSyntacticFeatures {
 	private static final int WORD_IDX = 2;
 	private static final int POS_IDX = 3;
 	private static final int DEP_IDX = 5;
+	private static final int LEM_IDX = 6;
 
 	// vector indices
 	private static final int SYNTAX_FEATURE_COUNT = 95;
@@ -297,11 +299,11 @@ public class GetSyntacticFeatures {
 							while ((line = reader.readLine()) != null) {
 								if (!line.equals("")) {
 									String[] splitLine = line.split("\\s+");
-									if (splitLine.length == 6) {
+									if (splitLine.length == 7) {
 										String word = splitLine[WORD_IDX];
 										String pos = splitLine[POS_IDX];
 										String dep = splitLine[DEP_IDX];
-	
+											
 										posTotals.put(pos, posTotals.get(pos) + 1.0);
 										parseTotals.put(dep, parseTotals.get(dep) + 1.0);
 	
@@ -333,61 +335,82 @@ public class GetSyntacticFeatures {
 	
 	public void functionWords(){
 		try(BufferedReader factorieOutput = getFactorieReader()){
+			
+			// TODO move this somewhere else
+			Configuration config = new Configuration();
+			Path path = new Path(OUTPUT_DIR + File.separator + "features");
+			FileSystem fs = FileSystem.get(config);
+			SequenceFile.Writer mahoutWriter = new SequenceFile.Writer(fs, config, path, Text.class, VectorWritable.class);
+			
 			// initialize per-document counts using (keys of) existing data structures
 			Map<String, Double> posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
 			Map<String, Double> parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
 			Map<String, Double> functionPerDoc = Util.newMapFromKeySet(this.functionTotals.keySet(), 0.0);
-			double[] syntaxVector;
+			double[] syntaxVector = new double[SYNTAX_FEATURE_COUNT];
 
 			String line;
-			while((line = factorieOutput.readLine()) != null){
-				// create vector to store syntactic features
-				syntaxVector = new double[SYNTAX_FEATURE_COUNT];
-				
-				String lastUser = "";
-				while ((line = factorieOutput.readLine()) != null) {
-					if (!line.equals("")) {
-						//System.out.println(line);
-						String[] splitLine = line.split("\\s+");
-						if (splitLine.length == 8) {
-	
-							String user = splitLine[0];
-							String review = splitLine[1];
-							if(!user.equals(lastUser)){
-								
-								// write results
-								double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc);
-								String vectorKey = user + "/" + review;
-								printMahoutVector(vectorKey, allFreqs);
-								
-								// re-initialize data structures
-								posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
-								parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
-								functionPerDoc = Util.newMapFromKeySet(functionTotals.keySet(), 0.0);
-								syntaxVector = new double[SYNTAX_FEATURE_COUNT];
+			String user = null;
+			String lastReview = null;
+			String review = null;
+			int lineCount = 0;
+			while ((line = factorieOutput.readLine()) != null) {
+				if (!line.equals("")) {
+					lineCount++;
+					System.out.println(line);
+					String[] splitLine = line.split("\\s+");
+					if (splitLine.length == 9) {
 
-							}
-							
-							String word = splitLine[WORD_IDX+2];
-							String pos = splitLine[POS_IDX+2];
-							String dep = splitLine[DEP_IDX+2];
-							
-							// update syntax vector with current word
-							syntaxFeatures(word, syntaxVector);
-	
-							posPerDoc.put(pos, posPerDoc.get(pos) + 1.0);
-							parsePerDoc.put(dep, parsePerDoc.get(dep) + 1.0);
-	
-							String lowerWord = word.toLowerCase();
-	
-							if (functionPosTags.contains(pos))
-								functionPerDoc.put(lowerWord, functionPerDoc.get(lowerWord) + 1.0);
-							
-							lastUser = user;
+						user = splitLine[0];
+						review = splitLine[1];
+						
+						// gross I want to get rid of this
+						if(lineCount == 1)
+							lastReview = review;
+						
+						if(!review.equals(lastReview)){
+							// write results before tabulating new results
+							double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc);
+							String vectorKey = user + "/" + review;
+							printMahoutVector(vectorKey, allFreqs, mahoutWriter);
+
+							// re-initialize data structures
+							posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
+							parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
+							functionPerDoc = Util.newMapFromKeySet(functionTotals.keySet(), 0.0);
+							syntaxVector = new double[SYNTAX_FEATURE_COUNT];
 						}
+
+						String word = splitLine[WORD_IDX+2];
+						String pos = splitLine[POS_IDX+2];
+						String dep = splitLine[DEP_IDX+2];
+
+						// update syntax vector with current word
+						syntaxFeatures(word, syntaxVector);
+
+						posPerDoc.put(pos, posPerDoc.get(pos) + 1.0);
+						parsePerDoc.put(dep, parsePerDoc.get(dep) + 1.0);
+
+						String lowerWord = word.toLowerCase();
+
+						if (functionPosTags.contains(pos))
+							functionPerDoc.put(lowerWord, functionPerDoc.get(lowerWord) + 1.0);
+
+						lastReview = review;
 					}
-				}	
-			} 
+				}
+			}
+			// write final results
+			double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc);
+			String vectorKey = user + "/" + review;
+			printMahoutVector(vectorKey, allFreqs, mahoutWriter);
+
+			// re-initialize data structures
+			posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
+			parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
+			functionPerDoc = Util.newMapFromKeySet(functionTotals.keySet(), 0.0);
+			syntaxVector = new double[SYNTAX_FEATURE_COUNT];
+			
+			mahoutWriter.close();
 		} catch (IOException e){
 			//TODO auto-generated catch block
 			e.printStackTrace();
@@ -446,20 +469,21 @@ public class GetSyntacticFeatures {
 		return allFreqs;
 	}
 	
-	private static void printMahoutVector(String vectorKey, double[] vector)
+	private static void printMahoutVector(String vectorKey, double[] vector, SequenceFile.Writer mahoutWriter)
 	{
-		Configuration config = new Configuration();
-		Path path = new Path(OUTPUT_DIR + File.separator + "features");
-		try(FileSystem fs = FileSystem.get(config);
-			SequenceFile.Writer mahoutWriter = new SequenceFile.Writer(fs, config, path, Text.class, VectorWritable.class)){
-			VectorWritable vec = new VectorWritable();
-			vec.set(new DenseVector(vector));
+		System.out.print(vectorKey + ":");
+		for(int i = 0; i < vector.length; ++i){
+			System.out.print(vector[i] + " ");
+		}
+		System.out.println();
+		
+		VectorWritable vec = new VectorWritable();
+		vec.set(new NamedVector(new DenseVector(vector), vectorKey));
+		try {
 			mahoutWriter.append(new Text(vectorKey), vec);
-			
-		} catch (IOException e){
-			//TODO auto-generated catch block
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 }
