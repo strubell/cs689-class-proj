@@ -104,7 +104,7 @@ public class GetSyntacticFeatures {
 		syntaxVector[WORD_COUNT + 1] += word.length();
 
 		// word length frequency (lengths 1-20)
-		syntaxVector[WORD_LENGTH_FREQ + Math.min(word.length(), 20) - 1] += 1;
+		syntaxVector[WORD_LENGTH_FREQ + Math.max(word.length(), 20) - 1] += 1;
 
 
 		for (int i = 0; i < word.length(); i ++)
@@ -268,17 +268,16 @@ public class GetSyntacticFeatures {
 	
 	public BufferedReader getFactorieReader() throws FileNotFoundException{
 		
-		List<User> userList = LoadYelpData.getYelpReviews();
-
 		// TODO move these somewhere less hard-coded
 		int startIndex = 0;
-		int numToTake = userList.size();
+		int numToTake = 1;
 		
 		File factorieFile = new File(FACTORIE_OUTPUT_FILE);
 		
 		// if file doesn't exist
 		if(!factorieFile.exists() || this.functionTotals == null){
 			try(PrintWriter output = new PrintWriter(new FileWriter(factorieFile))){
+				List<User> userList = LoadYelpData.getYelpReviews();
 				
 				this.posTotals = Util.newMapFromKeySet(posTags, 0.0);
 				this.parseTotals = Util.newMapFromKeySet(parseLabels, 0.0);
@@ -357,6 +356,7 @@ public class GetSyntacticFeatures {
 			while ((line = factorieOutput.readLine()) != null) {
 				if (!line.equals("")) {
 					lineCount++;
+					System.out.println(line);
 					String[] splitLine = line.split("\\s+");
 					if (splitLine.length == 9) {
 
@@ -400,10 +400,16 @@ public class GetSyntacticFeatures {
 				}
 			}
 			// write final results
-//			double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc);
-//			String vectorKey = user + "/" + review;
-//			printMahoutVector(vectorKey, allFreqs, mahoutWriter);
+			double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc);
+			String vectorKey = user + "/" + review;
+			printMahoutVector(vectorKey, allFreqs, mahoutWriter);
 
+			// re-initialize data structures
+			posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
+			parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
+			functionPerDoc = Util.newMapFromKeySet(functionTotals.keySet(), 0.0);
+			syntaxVector = new double[SYNTAX_FEATURE_COUNT];
+			
 			mahoutWriter.close();
 		} catch (IOException e){
 			//TODO auto-generated catch block

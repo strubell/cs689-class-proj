@@ -4,118 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class Analysis {
 
-
-	public static void main(String[] args)
-	{
-		mahoutSimilarityParser("results/");		
-	}
-	public static void mahoutSimilarityParser(String path)
-	{
-		HashMap<String, String> labels = mahoutLabels(path, false);
-		String line, key, label;
-		String[] values, parts;
-		ArrayList<Double> classSimilarity = new ArrayList<Double>();
-		ArrayList<Double> allSimilarity = new ArrayList<Double>();
-
-		double currentVal, classCount = 0, classSim = 0, otherCount = 0, otherSim = 0;
-		try 
-		{
-			BufferedReader reader = new BufferedReader(new FileReader(path + "data.txt"));		
-			int i = 0;
-			while ((line = reader.readLine()) != null)
-			{
-				System.out.println("Reading line : "+ i++);
-				if (line.startsWith("Key:")){
-					parts = line.split("\\{");
-					key = parts[0].split(":")[1].trim();
-					label = labels.get(key);
-					parts = parts[1].split("\\}");
-					if (parts != null)
-					{
-						values = parts[0].split(",");
-
-
-						for(String pair : values)
-						{
-							parts = pair.split(":");
-							// dont compare the docuemnt to itself or an unlabled document
-							if ( !parts[0].equals(key))
-							{
-								currentVal = Double.parseDouble(parts[1]);
-
-								// documents in the same class, not no label class (-1)
-								if (label.equals(labels.get(parts[0])))
-								{								
-									classSimilarity.add(currentVal);			
-									classCount++;
-									classSim += currentVal;
-								}
-								else
-								{
-									allSimilarity.add(currentVal);
-									otherCount++;
-									otherSim += currentVal;
-								}
-							}
-						}
-					}
-				}
-			}
-			reader.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
-
-		System.out.println("Intra Cluster similarity : " + (classSim / classCount));
-		System.out.println("Inter Cluster similarity : " + (otherSim / otherCount));
-
-	}
-
-	private static HashMap<String, String> mahoutLabels(String path, boolean getId)
-	{
-		HashMap<String, String> labels = new HashMap<String, String>();
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(path + "labels.txt"));			
-			String line;
-			String[] fileParts;
-			String key;
-			String[] parts;
-			String label;
-			String id;
-			while ((line = reader.readLine()) != null)
-			{
-				if (line.startsWith("Key:"))
-				{				
-					parts = line.split(" ");
-					key = parts[1].replace(":", "").trim();
-					fileParts = parts[3].split("\\/");
-					label = fileParts[0];
-					id = fileParts[1];
-					if (getId)
-						labels.put(id, key);
-					else
-						labels.put(key, label+"_"+id);
-				}
-			}
-			reader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return labels;
-	}
-
+	
 	public static void computeScores(String fileName)
 	{
 		BufferedReader reader = null;
