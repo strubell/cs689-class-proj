@@ -30,7 +30,19 @@ public class Util {
 	}
 	
 	public static BufferedReader processSentence(String inputSentence) throws IOException{
-		// TODO close this
+		
+//		try(Socket connection = new Socket("localhost", 3228)){
+//			PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(connection.getOutputStream())), true);
+//			writer.println(inputSentence);
+//			connection.shutdownOutput();
+//			return new BufferedReader(new InputStreamReader(connection.getInputStream()));	
+//		} catch (IOException e){
+//			e.printStackTrace();
+//		}
+//		return null;
+		
+		// TODO fix socket closing situation
+		// ok, actually, this socket is definitely always getting closed, Eclipse just doens't know it
 		Socket connection = new Socket("localhost", 3228);
 		PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(connection.getOutputStream())), true);
 		writer.println(inputSentence);
