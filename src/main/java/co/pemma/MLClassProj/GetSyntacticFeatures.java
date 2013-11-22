@@ -31,26 +31,47 @@ public class GetSyntacticFeatures {
 	private static final int DEP_IDX = 5;
 	private static final int LEM_IDX = 6;
 
-	// vector indices
-	private static final int SYNTAX_FEATURE_COUNT = 95;
-	private static final int WORD_SHAPE = 0;
-	private static final int WORD_COUNT = 5;
-	private static final int LETTERS = 7;
-	private static final int DIGITS = 33;
-	private static final int WORD_LENGTH_FREQ = 43;
-	private static final int PUNCTUATION = 63;
-	private static final int SPECIAL_CHARS = 74;
-
 	private static final int BIG_ARR_SIZE = 1000;
+
+	// define puncuation and special chars to use
+	private static char[] PUNCTUATION_TYPES = {'.', '?', '!', ',', ';', ':', '(', ')', '\"', '-', '\''};
+	private static char[] SPECIAL_CHAR_TYPES = {'`', '~', '@', '#', '$', '%', '^', '&', '*', '_', '+', '=', '[', ']', '{', '}', '\\', '|', '/', '<', '>'};
+
+	// vector indices
+	private static int SYNTAX_FEATURE_COUNT = 0;
+	private static int WORD_SHAPE_START = 0;
+	private static int WORD_COUNT_START = 5;
+	private static int LETTERS_START = 7;
+	private static int DIGITS_START = 33;
+	private static int WORD_LENGTH_FREQ_START = 43;
+	private static int PUNCTUATION_START = 63;
+	private static int SPECIAL_CHARS_START = 74;
+
+	private static final int WORD_SHAPE_COUNT = 5;
+	private static final int WORD_COUNT_COUNT = 2;
+	private static final int LETTERS_COUNT = 26;
+	private static final int DIGITS_COUNT = 10;
+	private static final int WORD_LENGTH_FREQ_COUNT = 20;
+	private static final int PUNCTUATION_COUNT = 11;
+	private static final int SPECIAL_CHARS_COUNT = 21;
+
+	// features to use
+	private static boolean WORD_SHAPE_ON = true;
+	private static boolean WORD_COUNT_ON = true;
+	private static boolean LETTERS_ON = true;
+	private static boolean DIGITS_ON = true;
+	private static boolean WORD_LENGTH_FREQ_ON = true;
+	private static boolean PUNCTUATION_ON = true;
+	private static boolean SPECIAL_CHARS_ON = true;
 
 	private static final String OUTPUT_DIR = "output";
 	private static final String FACTORIE_OUTPUT_FILE = "fac.out";
-	
+
 	private Map<String, Double> posTotals;
 	private Map<String, Double> parseTotals;
 	private Map<String, Double> functionTotals;
 
-//	private static final int USER_REVIEW_THRESHOLD = 250;
+	//	private static final int USER_REVIEW_THRESHOLD = 250;
 
 	private static final String[] FUNCTION_TAGS = { 
 		"CC", 	// Coordinating conjunction
@@ -90,7 +111,64 @@ public class GetSyntacticFeatures {
 		"possessive", "preconj", "predet", "prep", "prt", "punct",
 		"quantmod", "rcmod", "root", "xcomp" };
 	private static final Set<String> parseLabels = new HashSet<>(Arrays.asList(PARSE_LABELS));
+
+	public static void main(String[] args) {
+		setFeatures( new String[] {"ws","wc", "l", "d", "wl", "p", "sc"} );
+		GetSyntacticFeatures thisClass = new GetSyntacticFeatures();
+		thisClass.functionWords();
+	}
 	
+	private static void setFeatures(String[] args)
+	{
+		for (int i = 0; i < args.length; i ++)
+		{
+			String arg = args[i];
+
+			if (arg.equals("wordshape") || arg.equals("ws"))
+			{
+				WORD_SHAPE_ON = true;
+				WORD_SHAPE_START = SYNTAX_FEATURE_COUNT;
+				SYNTAX_FEATURE_COUNT += WORD_SHAPE_COUNT;
+			}
+			else if (arg.equals("wordcount") || arg.equals("wc"))
+			{
+				WORD_COUNT_ON = true;
+				WORD_COUNT_START = SYNTAX_FEATURE_COUNT;
+				SYNTAX_FEATURE_COUNT += WORD_COUNT_COUNT;
+			}
+			else if (arg.equals("letters") || arg.equals("l"))
+			{
+				LETTERS_ON = true;
+				LETTERS_START = SYNTAX_FEATURE_COUNT;
+				SYNTAX_FEATURE_COUNT += LETTERS_COUNT;
+			}
+			else if (arg.equals("digits") || arg.equals("d"))
+			{
+				DIGITS_ON = true;
+				DIGITS_START = SYNTAX_FEATURE_COUNT;
+				SYNTAX_FEATURE_COUNT += DIGITS_COUNT;
+			}
+			else if (arg.equals("wordlength") || arg.equals("wl"))
+			{
+				WORD_LENGTH_FREQ_ON = true;
+				WORD_LENGTH_FREQ_START = SYNTAX_FEATURE_COUNT;
+				SYNTAX_FEATURE_COUNT += WORD_LENGTH_FREQ_COUNT;
+			}
+			else if (arg.equals("punctuation") || arg.equals("p"))
+			{
+				PUNCTUATION_ON = true;
+				PUNCTUATION_START = SYNTAX_FEATURE_COUNT;
+				SYNTAX_FEATURE_COUNT += PUNCTUATION_COUNT;
+			}
+			else if (arg.equals("specialchars") || arg.equals("sc"))
+			{
+				SPECIAL_CHARS_ON = true;
+				SPECIAL_CHARS_START = SYNTAX_FEATURE_COUNT;
+				SYNTAX_FEATURE_COUNT += SPECIAL_CHARS_COUNT;
+			}
+		}
+	}
+
 	private static void syntaxFeatures(String word, double[] syntaxVector)
 	{
 		boolean firstUpper = false;
@@ -99,12 +177,16 @@ public class GetSyntacticFeatures {
 		int wordShape = -1;
 
 		// word count
-		syntaxVector[WORD_COUNT] ++;		
-		// character count
-		syntaxVector[WORD_COUNT + 1] += word.length();
+		if (WORD_COUNT_ON)
+		{
+			syntaxVector[WORD_COUNT_START] ++;		
+			// character count
+			syntaxVector[WORD_COUNT_START + 1] += word.length();
+		}
 
 		// word length frequency (lengths 1-20)
-		syntaxVector[WORD_LENGTH_FREQ + Math.min(word.length(), 20) - 1] += 1;
+		if (WORD_LENGTH_FREQ_ON)
+			syntaxVector[WORD_LENGTH_FREQ_START + Math.min(word.length(), WORD_LENGTH_FREQ_COUNT) - 1] ++;
 
 
 		for (int i = 0; i < word.length(); i ++)
@@ -112,175 +194,121 @@ public class GetSyntacticFeatures {
 			char c = word.charAt(i);
 
 			// digits occurrence
-			if (c >= 0 && c <= 9 )
-				syntaxVector[DIGITS + c] ++;
+			if (DIGITS_ON)
+				if (c >= 0 && c <= 9 )
+					syntaxVector[DIGITS_START + c] ++;
 
 			// punctuation
-			else if (c == '.')
-				syntaxVector[PUNCTUATION] ++;
-			else if (c == '?')
-				syntaxVector[PUNCTUATION + 1] ++;
-			else if (c == '!')
-				syntaxVector[PUNCTUATION + 2] ++;
-			else if (c == ',')
-				syntaxVector[PUNCTUATION + 3] ++;
-			else if (c == ';')
-				syntaxVector[PUNCTUATION + 4] ++;
-			else if (c == ':')
-				syntaxVector[PUNCTUATION + 5] ++;
-			else if (c == '(')
-				syntaxVector[PUNCTUATION + 6] ++;
-			else if (c == ')')
-				syntaxVector[PUNCTUATION + 7] ++;
-			else if (c == '\"')
-				syntaxVector[PUNCTUATION + 8] ++;
-			else if (c == '-')
-				syntaxVector[PUNCTUATION + 9] ++;
-			else if (c == '\'')
-				syntaxVector[PUNCTUATION + 10] ++;
+			if (PUNCTUATION_ON)
+				for (int j = 0; i < PUNCTUATION_TYPES.length; i++)
+					if (c == PUNCTUATION_TYPES[j]){
+						syntaxVector[PUNCTUATION_START + j] ++;
+						break;
+					}
 
 			// special chars
-			else if (c == '`')
-				syntaxVector[SPECIAL_CHARS] ++;
-			else if (c == '~')
-				syntaxVector[SPECIAL_CHARS + 1] ++;
-			else if (c == '@')
-				syntaxVector[SPECIAL_CHARS + 2] ++;
-			else if (c == '#')
-				syntaxVector[SPECIAL_CHARS + 3] ++;
-			else if (c == '$')
-				syntaxVector[SPECIAL_CHARS + 4] ++;
-			else if (c == '%')
-				syntaxVector[SPECIAL_CHARS + 5] ++;
-			else if (c == '^')
-				syntaxVector[SPECIAL_CHARS + 6] ++;
-			else if (c == '&')
-				syntaxVector[SPECIAL_CHARS + 7] ++;
-			else if (c == '*')
-				syntaxVector[SPECIAL_CHARS + 8] ++;
-			else if (c == '_')
-				syntaxVector[SPECIAL_CHARS + 9] ++;
-			else if (c == '+')
-				syntaxVector[SPECIAL_CHARS + 10] ++;
-			else if (c == '=')
-				syntaxVector[SPECIAL_CHARS + 11] ++;
-			else if (c == '[')
-				syntaxVector[SPECIAL_CHARS + 12] ++;
-			else if (c == ']')
-				syntaxVector[SPECIAL_CHARS + 13] ++;
-			else if (c == '{')
-				syntaxVector[SPECIAL_CHARS + 14] ++;
-			else if (c == '}')
-				syntaxVector[SPECIAL_CHARS + 15] ++;
-			else if (c == '\\')
-				syntaxVector[SPECIAL_CHARS + 16] ++;
-			else if (c == '|')
-				syntaxVector[SPECIAL_CHARS + 17] ++;
-			else if (c == '/')
-				syntaxVector[SPECIAL_CHARS + 18] ++;
-			else if (c == '<')
-				syntaxVector[SPECIAL_CHARS + 19] ++;
-			else if (c == '>')
-				syntaxVector[SPECIAL_CHARS + 20] ++;
+			if (SPECIAL_CHARS_ON)
+				for (int j = 0; i < SPECIAL_CHAR_TYPES.length; i++)
+					if (c == SPECIAL_CHAR_TYPES[j]){
+						syntaxVector[SPECIAL_CHARS_START + j] ++;
+						break;
+					}
 
 			// letter occurrence
-			else if (c >= 'a' && c <= 'z')
+			if (c >= 'a' && c <= 'z')
 			{
-				syntaxVector[LETTERS + (c - 'a')] ++;
+				if (LETTERS_ON)
+					syntaxVector[LETTERS_START + (c - 'a')] ++;
 				allUpper = false;
 			}
-			else if (c >= 'A' && c <= 'Z')
-			{
-				syntaxVector[LETTERS + (c - 'A')] ++;
 
-				// word shape
-				if (i == 0)
-					firstUpper = true;
-				else 
+			if (c >= 'A' && c <= 'Z')
+			{
+				if (LETTERS_ON)
+					syntaxVector[LETTERS_START + (c - 'A')] ++;
+
+				if (WORD_SHAPE_ON)
 				{
-					if (!firstUpper && !otherUpper)
-						wordShape = 3; // camelCap
+					// word shape
+					if (i == 0)
+						firstUpper = true;
 					else 
-						wordShape = 4; // other
-					otherUpper = true;
+					{
+						if (!firstUpper && !otherUpper)
+							wordShape = 3; // camelCap
+						else 
+							wordShape = 4; // other
+						otherUpper = true;
+					}
 				}
 			}
 		}
+
 		// word shape 
-		if (allUpper) wordShape = 0; // all upper
-		else if (!firstUpper && !otherUpper) wordShape = 1; // all lower
-		else if (firstUpper && !otherUpper) wordShape = 2; // only first upper
-		syntaxVector[WORD_SHAPE + wordShape] += 1;
+		if (WORD_SHAPE_ON)
+		{
+			if (allUpper) wordShape = 0; // all upper
+			else if (!firstUpper && !otherUpper) wordShape = 1; // all lower
+			else if (firstUpper && !otherUpper) wordShape = 2; // only first upper
+			syntaxVector[WORD_SHAPE_START + wordShape] += 1;
+		}
 	}
 
 	private static void normalizeSyntaxVector(double[] syntaxVector) 
 	{
-		double words = syntaxVector[WORD_COUNT];
-		double chars = syntaxVector[WORD_COUNT + 1];
+		double words = syntaxVector[WORD_COUNT_START];
+		double chars = syntaxVector[WORD_COUNT_START + 1];
 
-		// normalize word shapes
-		for (int i = 0; i < 5; i++)
-			syntaxVector[WORD_SHAPE + i] = syntaxVector[WORD_SHAPE + i] / words;
+		if (WORD_SHAPE_ON)
+			// normalize word shapes
+			for (int i = 0; i < 5; i++)
+				syntaxVector[WORD_SHAPE_START + i] = syntaxVector[WORD_SHAPE_START + i] / words;
 
-		// normalize word length frequency
-		for (int i = 0; i < 21; i++)
-			syntaxVector[WORD_LENGTH_FREQ + i] = syntaxVector[WORD_LENGTH_FREQ + i] / words;
+		if (WORD_LENGTH_FREQ_ON)
+			// normalize word length frequency
+			for (int i = 0; i < 21; i++)
+				syntaxVector[WORD_LENGTH_FREQ_START + i] = syntaxVector[WORD_LENGTH_FREQ_START + i] / words;
 
-		// normalize digit counts
-		for (int i = 0; i < 10; i++)
-			syntaxVector[DIGITS + i] = syntaxVector[DIGITS + i] / chars;
+		if (DIGITS_ON)
+			// normalize digit counts
+			for (int i = 0; i < 10; i++)
+				syntaxVector[DIGITS_START + i] = syntaxVector[DIGITS_START + i] / chars;
 
-		// normalize letter counts
-		for (int i = 0; i < 26; i++)
-			syntaxVector[LETTERS + i] = syntaxVector[LETTERS + i] / chars;
+		if (LETTERS_ON)
+			// normalize letter counts
+			for (int i = 0; i < 26; i++)
+				syntaxVector[LETTERS_START + i] = syntaxVector[LETTERS_START + i] / chars;
 
-		// normalize punctuation counts
-		for (int i = 0; i < 11; i++)
-			syntaxVector[PUNCTUATION + i] = syntaxVector[PUNCTUATION + i] / chars;
+		if (PUNCTUATION_ON)
+			// normalize punctuation counts
+			for (int i = 0; i < 11; i++)
+				syntaxVector[PUNCTUATION_START + i] = syntaxVector[PUNCTUATION_START + i] / chars;
 
-		// normalize special char counts
-		for (int i = 0; i < 21; i++)
-			syntaxVector[SPECIAL_CHARS + i] = syntaxVector[SPECIAL_CHARS + i] / chars;
+		if (SPECIAL_CHARS_ON)
+			// normalize special char counts
+			for (int i = 0; i < 21; i++)
+				syntaxVector[SPECIAL_CHARS_START + i] = syntaxVector[SPECIAL_CHARS_START + i] / chars;
 	}
 
-	//	/*  frequency of syntax pairs 		[789]
-	//	/	(A,B) where A is parent of B
-	//	 */
-	//	private double[] syntaxCategoryPairs(String word)
-
-	public static void main(String[] args) {
-		//		double[] syntaxVector = new double[SYNTAX_FEATURE_COUNT];
-		//
-		//		syntaxFeatures("Pop.", syntaxVector);
-		//
-		//
-		//		for (int i = 0; i < syntaxVector.length; i++)
-		//		{
-		//			System.out.print(syntaxVector[i] +", ");
-		//		}
-
-		GetSyntacticFeatures thisClass = new GetSyntacticFeatures();
-		thisClass.functionWords();
-	}
-	
 	public BufferedReader getFactorieReader() throws FileNotFoundException{
-		
+
 		List<User> userList = LoadYelpData.getYelpReviews();
 
 		// TODO move these somewhere less hard-coded
-		int startIndex = 0;
-		int numToTake = 1;//userList.size();
-		
+		int startIndex = 1;
+
+		int numToTake = 2;//userList.size();
+
 		File factorieFile = new File(FACTORIE_OUTPUT_FILE);
-		
+
 		// if file doesn't exist
 		if(!factorieFile.exists() || this.functionTotals == null){
 			try(PrintWriter output = new PrintWriter(new FileWriter(factorieFile))){
-				
+
 				this.posTotals = Util.newMapFromKeySet(posTags, 0.0);
 				this.parseTotals = Util.newMapFromKeySet(parseLabels, 0.0);
 				this.functionTotals = new HashMap<>(BIG_ARR_SIZE);
-				
+
 				// Gather counts for entire dataset while writing results to file for later use
 				int totalReviewCount = 1;
 				for (User user : userList.subList(startIndex, startIndex + numToTake)) {
@@ -291,7 +319,7 @@ public class GetSyntacticFeatures {
 							System.out.format("Processing review %d... ", totalReviewCount);
 							System.out.println(review.getText());
 						}
-						
+
 						try(BufferedReader reader = Util.processSentence(review.getText())){
 							String line;
 							while ((line = reader.readLine()) != null) {
@@ -301,10 +329,10 @@ public class GetSyntacticFeatures {
 										String word = splitLine[WORD_IDX];
 										String pos = splitLine[POS_IDX];
 										String dep = splitLine[DEP_IDX];
-											
+
 										posTotals.put(pos, posTotals.get(pos) + 1.0);
 										parseTotals.put(dep, parseTotals.get(dep) + 1.0);
-	
+
 										if (functionPosTags.contains(pos)) {
 											String lowerWord = word.toLowerCase();
 											if (functionTotals.containsKey(lowerWord)) {
@@ -330,16 +358,16 @@ public class GetSyntacticFeatures {
 		}
 		return new BufferedReader(new FileReader(factorieFile));
 	}
-	
+
 	public void functionWords(){
 		try(BufferedReader factorieOutput = getFactorieReader()){
-			
+
 			// TODO move this somewhere else
 			Configuration config = new Configuration();
 			Path path = new Path(OUTPUT_DIR + File.separator + "features");
 			FileSystem fs = FileSystem.get(config);
 			SequenceFile.Writer mahoutWriter = new SequenceFile.Writer(fs, config, path, Text.class, VectorWritable.class);
-			
+
 			// initialize per-document counts using (keys of) existing data structures
 			Map<String, Double> posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
 			Map<String, Double> parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
@@ -360,11 +388,11 @@ public class GetSyntacticFeatures {
 
 						user = splitLine[0];
 						review = splitLine[1];
-						
+
 						// gross I want to get rid of this
 						if(lineCount == 1)
 							lastReview = review;
-						
+
 						if(!review.equals(lastReview)){
 							// write results before tabulating new results
 							double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc, lemmasPerDoc);
@@ -385,7 +413,7 @@ public class GetSyntacticFeatures {
 						String lem = splitLine[LEM_IDX+2];
 
 						// update syntax vector with current word
-						syntaxFeatures(word, syntaxVector);
+						//						syntaxFeatures(word, syntaxVector);
 
 						posPerDoc.put(pos, posPerDoc.get(pos) + 1.0);
 						parsePerDoc.put(dep, parsePerDoc.get(dep) + 1.0);
@@ -404,9 +432,9 @@ public class GetSyntacticFeatures {
 				}
 			}
 			// write final results
-//			double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc);
-//			String vectorKey = user + "/" + review;
-//			printMahoutVector(vectorKey, allFreqs, mahoutWriter);
+			//			double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc);
+			//			String vectorKey = user + "/" + review;
+			//			printMahoutVector(vectorKey, allFreqs, mahoutWriter);
 
 			mahoutWriter.close();
 		} catch (IOException e){
@@ -417,9 +445,9 @@ public class GetSyntacticFeatures {
 
 	private double[] populateFeatureVector(double[] syntaxVector, Map<String, Double> posPerDoc,
 			Map<String, Double> parsePerDoc, Map<String, Double> functionPerDoc, Map<String, Double> lemmasPerDoc) {
-		
+
 		int numObservedFuncWords = this.functionTotals.keySet().size();
-		
+
 		double[] posFreqs = new double[POS_TAGS.length];
 		double[] depFreqs = new double[PARSE_LABELS.length];
 		double[] funcFreqs = new double[numObservedFuncWords]; // make this a variable?
@@ -495,7 +523,7 @@ public class GetSyntacticFeatures {
 			System.out.print(vector[i] + " ");
 		}
 		System.out.println();
-		
+
 		VectorWritable vec = new VectorWritable();
 		vec.set(new NamedVector(new DenseVector(vector), vectorKey));
 		try {
