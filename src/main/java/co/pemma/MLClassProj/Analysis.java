@@ -31,7 +31,7 @@ public class Analysis {
 			int i = 0;
 			while ((line = reader.readLine()) != null)
 			{
-				if ( ++i % 100 == 0 ) System.out.println("Reading line : " + i);
+//				if ( ++i % 100 == 0 ) System.out.println("Reading line : " + i);
 				if (line.startsWith("Key:")){
 					parts = line.split("\\{");
 					key = parts[0].split(":")[1].trim();

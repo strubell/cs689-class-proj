@@ -54,30 +54,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.eclipsesource</groupId>
+			<groupId>co.pemma</groupId>
 			<artifactId>minimal-json</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/res/minimal-json.jar</systemPath>
+			<version>1.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>cc.factorie</groupId>
-			<artifactId>factorie</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
 		
-		<dependency>
-			<groupId>cc.factorie.app.nlp</groupId>
-			<artifactId>factorie-nlp-resources</artifactId>
-			<version>0.1-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>cc.factorie.app.nlp</groupId>
-			<artifactId>factorie-nlp-resources-ner</artifactId>
-			<version>0.1-SNAPSHOT</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.mahout</groupId>

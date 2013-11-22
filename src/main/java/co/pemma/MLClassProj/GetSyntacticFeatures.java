@@ -121,8 +121,13 @@ public class GetSyntacticFeatures {
 		//setFeatures( new String[] {"ws", "wc", "l", "d", "wl", "p", "sc", "pos", "dp", "fw", "y"} );
 		
 		// just punctuation & special chars
-		setFeatures( new String[] {"p", "sc"} );
-
+//		setFeatures( new String[] {"d"} );
+		setFeatures(args);
+		
+		String featuresUsed = "";
+		for (int i = 0; i < args.length; i ++) featuresUsed += " " + args[i];
+		
+		System.out.println("Exporting feature vectors for : " + featuresUsed);
 		
 		GetSyntacticFeatures thisClass = new GetSyntacticFeatures();
 		thisClass.functionWords();
@@ -221,8 +226,8 @@ public class GetSyntacticFeatures {
 
 			// digits occurrence
 			if (DIGITS_ON)
-				if (c >= 0 && c <= 9 )
-					syntaxVector[DIGITS_START + c] ++;
+				if (c >= '0' && c <= '9' )
+					syntaxVector[DIGITS_START + (c - '0')] ++;
 
 			// punctuation
 			if (PUNCTUATION_ON)
@@ -284,32 +289,32 @@ public class GetSyntacticFeatures {
 		
 		if (WORD_SHAPE_ON)
 			// normalize word shapes
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < WORD_SHAPE_COUNT; i++)
 				syntaxVector[WORD_SHAPE_START + i] = syntaxVector[WORD_SHAPE_START + i] / words;
 
 		if (WORD_LENGTH_FREQ_ON)
 			// normalize word length frequency
-			for (int i = 0; i < 21; i++)
+			for (int i = 0; i < WORD_LENGTH_FREQ_COUNT; i++)
 				syntaxVector[WORD_LENGTH_FREQ_START + i] = syntaxVector[WORD_LENGTH_FREQ_START + i] / words;
 
 		if (DIGITS_ON)
 			// normalize digit counts
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < DIGITS_COUNT; i++)
 				syntaxVector[DIGITS_START + i] = syntaxVector[DIGITS_START + i] / chars;
 
 		if (LETTERS_ON)
 			// normalize letter counts
-			for (int i = 0; i < 26; i++)
+			for (int i = 0; i < LETTERS_COUNT; i++)
 				syntaxVector[LETTERS_START + i] = syntaxVector[LETTERS_START + i] / chars;
 
 		if (PUNCTUATION_ON)
 			// normalize punctuation counts
-			for (int i = 0; i < 11; i++)
+			for (int i = 0; i < PUNCTUATION_COUNT; i++)
 				syntaxVector[PUNCTUATION_START + i] = syntaxVector[PUNCTUATION_START + i] / chars;
 
 		if (SPECIAL_CHARS_ON)
 			// normalize special char counts
-			for (int i = 0; i < 21; i++)
+			for (int i = 0; i < SPECIAL_CHARS_COUNT; i++)
 				syntaxVector[SPECIAL_CHARS_START + i] = syntaxVector[SPECIAL_CHARS_START + i] / chars;
 	}
 
@@ -320,7 +325,7 @@ public class GetSyntacticFeatures {
 		// TODO move these somewhere less hard-coded
 		int startIndex = 0;
 
-		int numToTake = 1;//userList.size();
+		int numToTake = userList.size();
 
 		File factorieFile = new File(FACTORIE_OUTPUT_FILE);
 
@@ -400,28 +405,23 @@ public class GetSyntacticFeatures {
 
 			String line;
 			String user = null;
-			String lastReview = null;
+			String lastUser = null;
+			String lastReview = "1";
 			String review = null;
 			double wordCount = 0;
 			double charCount = 0;
-			int lineCount = 0;
 			while ((line = factorieOutput.readLine()) != null) {
 				if (!line.equals("")) {
-					lineCount++;
 					String[] splitLine = line.split("\\s+");
 					if (splitLine.length == 9) {
 
 						user = splitLine[0];
 						review = splitLine[1];
-
-						// gross I want to get rid of this
-						if(lineCount == 1)
-							lastReview = review;
-
+						
 						if(!review.equals(lastReview)){
 							// write results before tabulating new results
 							double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc, lemmasPerDoc, wordCount, charCount);
-							String vectorKey = user + "/" + review;
+							String vectorKey = lastUser + "/" + lastReview;
 							printMahoutVector(vectorKey, allFreqs, mahoutWriter);
 
 							// re-initialize data structures
@@ -430,6 +430,7 @@ public class GetSyntacticFeatures {
 							functionPerDoc = Util.newMapFromKeySet(functionTotals.keySet(), 0.0);
 							lemmasPerDoc = new HashMap<>(100);
 							syntaxVector = new double[SYNTAX_FEATURE_COUNT];
+
 							wordCount = 0;
 							charCount = 0;
 						}
@@ -458,6 +459,7 @@ public class GetSyntacticFeatures {
 							functionPerDoc.put(lowerWord, functionPerDoc.get(lowerWord) + 1.0);
 
 						lastReview = review;
+						lastUser = user;
 					}
 				}
 			}
@@ -539,6 +541,7 @@ public class GetSyntacticFeatures {
 		{
 			allFreqs[i+l] = syntaxVector[l];
 		}
+		syntaxVector = new double[SYNTAX_FEATURE_COUNT];
 		
 		return allFreqs;
 	}
@@ -563,11 +566,12 @@ public class GetSyntacticFeatures {
 
 	private static void printMahoutVector(String vectorKey, double[] vector, SequenceFile.Writer mahoutWriter)
 	{
-		System.out.print(vectorKey + ":");
-		for(int i = 0; i < vector.length; ++i){
-			System.out.print(vector[i] + " ");
-		}
-		System.out.println();
+		// print poopler
+//		System.out.print(vectorKey + ":");
+//		for(int i = 0; i < vector.length; ++i){
+//			System.out.print(vector[i] + " ");
+//		}
+//		System.out.println();
 
 		VectorWritable vec = new VectorWritable();
 		vec.set(new NamedVector(new DenseVector(vector), vectorKey));
