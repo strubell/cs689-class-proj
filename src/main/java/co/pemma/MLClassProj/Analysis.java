@@ -31,16 +31,15 @@ public class Analysis {
 			int i = 0;
 			while ((line = reader.readLine()) != null)
 			{
-				System.out.println("Reading line : "+ i++);
+				if ( ++i % 100 == 0 ) System.out.println("Reading line : " + i);
 				if (line.startsWith("Key:")){
 					parts = line.split("\\{");
 					key = parts[0].split(":")[1].trim();
 					label = labels.get(key);
 					parts = parts[1].split("\\}");
-					if (parts != null)
+					if (parts .length > 0)
 					{
 						values = parts[0].split(",");
-
 
 						for(String pair : values)
 						{
@@ -104,7 +103,7 @@ public class Analysis {
 					if (getId)
 						labels.put(id, key);
 					else
-						labels.put(key, label+"_"+id);
+						labels.put(key, label);
 				}
 			}
 			reader.close();
