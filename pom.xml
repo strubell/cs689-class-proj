@@ -10,9 +10,18 @@
 	<build>
 		<directory>target</directory>
 		<outputDirectory>target/classes</outputDirectory>
-		<finalName>${artifactId}-${version}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<sourceDirectory>src/main/java/</sourceDirectory>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -59,7 +68,15 @@
 			<version>1.0</version>
 		</dependency>
 
+<<<<<<< HEAD
 		
+=======
+		<dependency>
+			<groupId>cc.factorie</groupId>
+			<artifactId>factorie</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+>>>>>>> c2a2ee9a249e7779951cec14458656f3ef650995
 
 		<dependency>
 			<groupId>org.apache.mahout</groupId>
