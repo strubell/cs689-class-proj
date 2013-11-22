@@ -34,18 +34,18 @@ public class GetSyntacticFeatures {
 	private static final int BIG_ARR_SIZE = 1000;
 
 	// define puncuation and special chars to use
-	private static char[] PUNCTUATION_TYPES = {'.', '?', '!', ',', ';', ':', '(', ')', '\"', '-', '\''};
-	private static char[] SPECIAL_CHAR_TYPES = {'`', '~', '@', '#', '$', '%', '^', '&', '*', '_', '+', '=', '[', ']', '{', '}', '\\', '|', '/', '<', '>'};
+	private final static char[] PUNCTUATION_TYPES = {'.', '?', '!', ',', ';', ':', '(', ')', '\"', '-', '\''};
+	private final static char[] SPECIAL_CHAR_TYPES = {'`', '~', '@', '#', '$', '%', '^', '&', '*', '_', '+', '=', '[', ']', '{', '}', '\\', '|', '/', '<', '>'};
 
 	// vector indices
 	private static int SYNTAX_FEATURE_COUNT = 0;
-	private static int WORD_SHAPE_START = 0;
-	private static int WORD_COUNT_START = 5;
-	private static int LETTERS_START = 7;
-	private static int DIGITS_START = 33;
-	private static int WORD_LENGTH_FREQ_START = 43;
-	private static int PUNCTUATION_START = 63;
-	private static int SPECIAL_CHARS_START = 74;
+	private static int WORD_SHAPE_START;
+	private static int WORD_COUNT_START;
+	private static int LETTERS_START;
+	private static int DIGITS_START;
+	private static int WORD_LENGTH_FREQ_START;
+	private static int PUNCTUATION_START;
+	private static int SPECIAL_CHARS_START;
 
 	private static final int WORD_SHAPE_COUNT = 5;
 	private static final int WORD_COUNT_COUNT = 2;
@@ -56,14 +56,18 @@ public class GetSyntacticFeatures {
 	private static final int SPECIAL_CHARS_COUNT = 21;
 
 	// features to use
-	private static boolean WORD_SHAPE_ON = true;
-	private static boolean WORD_COUNT_ON = true;
-	private static boolean LETTERS_ON = true;
-	private static boolean DIGITS_ON = true;
-	private static boolean WORD_LENGTH_FREQ_ON = true;
-	private static boolean PUNCTUATION_ON = true;
-	private static boolean SPECIAL_CHARS_ON = true;
-
+	private static boolean WORD_SHAPE_ON = false;
+	private static boolean WORD_COUNT_ON = false;
+	private static boolean LETTERS_ON = false;
+	private static boolean DIGITS_ON = false;
+	private static boolean WORD_LENGTH_FREQ_ON = false;
+	private static boolean PUNCTUATION_ON = false;
+	private static boolean SPECIAL_CHARS_ON = false;
+	private static boolean DEP_FREQS_ON = false;
+	private static boolean POS_FREQS_ON = false;
+	private static boolean FUNC_FREQS_ON = false;
+	private static boolean YULE_ON = false;
+	
 	private static final String OUTPUT_DIR = "output";
 	private static final String FACTORIE_OUTPUT_FILE = "fac.out";
 
@@ -113,14 +117,14 @@ public class GetSyntacticFeatures {
 	private static final Set<String> parseLabels = new HashSet<>(Arrays.asList(PARSE_LABELS));
 
 	public static void main(String[] args) {
-		setFeatures( new String[] {"ws","wc", "l", "d", "wl", "p", "sc"} );
+		setFeatures( new String[] {"ws", "wc", "l", "d", "wl", "p", "sc", "pos", "dp", "fw", "y"} );
 		GetSyntacticFeatures thisClass = new GetSyntacticFeatures();
 		thisClass.functionWords();
 	}
 	
 	private static void setFeatures(String[] args)
 	{
-		for (int i = 0; i < args.length; i ++)
+		for (int i = 0; i < args.length; i++)
 		{
 			String arg = args[i];
 
@@ -165,6 +169,22 @@ public class GetSyntacticFeatures {
 				SPECIAL_CHARS_ON = true;
 				SPECIAL_CHARS_START = SYNTAX_FEATURE_COUNT;
 				SYNTAX_FEATURE_COUNT += SPECIAL_CHARS_COUNT;
+			}
+			else if (arg.equals("posfreqs") || arg.equals("pos"))
+			{
+				POS_FREQS_ON = true;
+			}
+			else if (arg.equals("dpfreqs") || arg.equals("dp"))
+			{
+				DEP_FREQS_ON = true;
+			}
+			else if (arg.equals("funcwords") || arg.equals("fw"))
+			{
+				FUNC_FREQS_ON = true;
+			}
+			else if (arg.equals("yule") || arg.equals("y"))
+			{
+				YULE_ON = true;
 			}
 		}
 	}
@@ -413,7 +433,7 @@ public class GetSyntacticFeatures {
 						String lem = splitLine[LEM_IDX+2];
 
 						// update syntax vector with current word
-						//						syntaxFeatures(word, syntaxVector);
+						syntaxFeatures(word, syntaxVector);
 
 						posPerDoc.put(pos, posPerDoc.get(pos) + 1.0);
 						parsePerDoc.put(dep, parsePerDoc.get(dep) + 1.0);
@@ -455,36 +475,42 @@ public class GetSyntacticFeatures {
 
 		// populate feature vector(s)
 		int i = 0;
-		for(Entry<String,Double> entry : posPerDoc.entrySet()){
-			String key = entry.getKey();
-			Double value = entry.getValue();
-			Double total = this.posTotals.get(key);
-			double freq = total != 0.0? value/total : 0.0;
-			posFreqs[i] = freq;
-			allFreqs[i] = freq;
-			i++;
+		if(POS_FREQS_ON){
+			for(Entry<String,Double> entry : posPerDoc.entrySet()){
+				String key = entry.getKey();
+				Double value = entry.getValue();
+				Double total = this.posTotals.get(key);
+				double freq = total != 0.0? value/total : 0.0;
+				posFreqs[i] = freq;
+				allFreqs[i] = freq;
+				i++;
+			}
 		}
 
 		int j = 0;
-		for(Entry<String,Double> entry : parsePerDoc.entrySet()){
-			String key = entry.getKey();
-			Double value = entry.getValue();
-			Double total = this.parseTotals.get(key);
-			double freq = total != 0.0? value/total : 0.0;
-			depFreqs[j] = freq;
-			allFreqs[i+j] = freq;
-			j++;
+		if(DEP_FREQS_ON){
+			for(Entry<String,Double> entry : parsePerDoc.entrySet()){
+				String key = entry.getKey();
+				Double value = entry.getValue();
+				Double total = this.parseTotals.get(key);
+				double freq = total != 0.0? value/total : 0.0;
+				depFreqs[j] = freq;
+				allFreqs[i+j] = freq;
+				j++;
+			}
 		}
 
 		int k = 0;
-		for(Entry<String,Double> entry : functionPerDoc.entrySet()){
-			String key = entry.getKey();
-			Double value = entry.getValue();
-			Double total = this.functionTotals.get(key);
-			double freq = total != 0.0? value/total : 0.0;
-			funcFreqs[k] = freq;
-			allFreqs[i+j+k] = freq;
-			k++;
+		if(FUNC_FREQS_ON){
+			for(Entry<String,Double> entry : functionPerDoc.entrySet()){
+				String key = entry.getKey();
+				Double value = entry.getValue();
+				Double total = this.functionTotals.get(key);
+				double freq = total != 0.0? value/total : 0.0;
+				funcFreqs[k] = freq;
+				allFreqs[i+j+k] = freq;
+				k++;
+			}
 		}
 
 		normalizeSyntaxVector(syntaxVector);
@@ -493,7 +519,9 @@ public class GetSyntacticFeatures {
 			allFreqs[i+j+k+l] = syntaxVector[l];
 		}
 		
-		allFreqs[allFreqs.length-1] = calculateYuleK(lemmasPerDoc);
+		if(YULE_ON){
+			allFreqs[allFreqs.length-1] = calculateYuleK(lemmasPerDoc);
+		}
 		
 		return allFreqs;
 	}
