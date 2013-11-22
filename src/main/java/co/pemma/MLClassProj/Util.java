@@ -29,6 +29,17 @@ public class Util {
 		return newMap;
 	}
 	
+	public static <T> Map<Double,Double> reverseMap(Map<T,Double> m) {
+		Map<Double,Double> newMap  = new HashMap<>(m.size());
+		for(Double value : m.values()){
+			if(newMap.containsKey(value))
+				newMap.put(value, newMap.get(value) + 1.0);
+			else
+				newMap.put(value, 1.0);
+		}
+		return newMap;
+	}
+	
 	public static BufferedReader processSentence(String inputSentence) throws IOException{
 		
 //		try(Socket connection = new Socket("localhost", 3228)){
