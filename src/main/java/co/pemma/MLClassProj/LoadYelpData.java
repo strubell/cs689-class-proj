@@ -60,7 +60,7 @@ public class LoadYelpData {
 			while ((line = reader.readLine()) != null)
 			{				
 				jsonObj = JsonObject.readFrom(line);
-				id = jsonObj.get("user_id").toString();
+				id = jsonObj.get("user_id").toString().replaceAll("\"", "");
 
 				if(users.containsKey(id))
 				{
