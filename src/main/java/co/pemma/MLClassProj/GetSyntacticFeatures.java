@@ -117,7 +117,13 @@ public class GetSyntacticFeatures {
 	private static final Set<String> parseLabels = new HashSet<>(Arrays.asList(PARSE_LABELS));
 
 	public static void main(String[] args) {
-		setFeatures( new String[] {"ws", "wc", "l", "d", "wl", "p", "sc", "pos", "dp", "fw", "y"} );
+		// all
+		//setFeatures( new String[] {"ws", "wc", "l", "d", "wl", "p", "sc", "pos", "dp", "fw", "y"} );
+		
+		// just punctuation & special chars
+		setFeatures( new String[] {"p", "sc"} );
+
+		
 		GetSyntacticFeatures thisClass = new GetSyntacticFeatures();
 		thisClass.functionWords();
 	}
@@ -209,7 +215,7 @@ public class GetSyntacticFeatures {
 			syntaxVector[WORD_LENGTH_FREQ_START + Math.min(word.length(), WORD_LENGTH_FREQ_COUNT) - 1] ++;
 
 
-		for (int i = 0; i < word.length(); i ++)
+		for (int i = 0; i < word.length(); i++)
 		{
 			char c = word.charAt(i);
 
@@ -220,7 +226,7 @@ public class GetSyntacticFeatures {
 
 			// punctuation
 			if (PUNCTUATION_ON)
-				for (int j = 0; i < PUNCTUATION_TYPES.length; i++)
+				for (int j = 0; j < PUNCTUATION_TYPES.length; j++)
 					if (c == PUNCTUATION_TYPES[j]){
 						syntaxVector[PUNCTUATION_START + j] ++;
 						break;
@@ -228,7 +234,7 @@ public class GetSyntacticFeatures {
 
 			// special chars
 			if (SPECIAL_CHARS_ON)
-				for (int j = 0; i < SPECIAL_CHAR_TYPES.length; i++)
+				for (int j = 0; j < SPECIAL_CHAR_TYPES.length; j++)
 					if (c == SPECIAL_CHAR_TYPES[j]){
 						syntaxVector[SPECIAL_CHARS_START + j] ++;
 						break;
@@ -274,11 +280,8 @@ public class GetSyntacticFeatures {
 		}
 	}
 
-	private static void normalizeSyntaxVector(double[] syntaxVector) 
-	{
-		double words = syntaxVector[WORD_COUNT_START];
-		double chars = syntaxVector[WORD_COUNT_START + 1];
-
+	private static void normalizeSyntaxVector(double[] syntaxVector, double words, double chars){
+		
 		if (WORD_SHAPE_ON)
 			// normalize word shapes
 			for (int i = 0; i < 5; i++)
@@ -315,9 +318,9 @@ public class GetSyntacticFeatures {
 		List<User> userList = LoadYelpData.getYelpReviews();
 
 		// TODO move these somewhere less hard-coded
-		int startIndex = 1;
+		int startIndex = 0;
 
-		int numToTake = 2;//userList.size();
+		int numToTake = 1;//userList.size();
 
 		File factorieFile = new File(FACTORIE_OUTPUT_FILE);
 
@@ -399,6 +402,8 @@ public class GetSyntacticFeatures {
 			String user = null;
 			String lastReview = null;
 			String review = null;
+			double wordCount = 0;
+			double charCount = 0;
 			int lineCount = 0;
 			while ((line = factorieOutput.readLine()) != null) {
 				if (!line.equals("")) {
@@ -415,7 +420,7 @@ public class GetSyntacticFeatures {
 
 						if(!review.equals(lastReview)){
 							// write results before tabulating new results
-							double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc, lemmasPerDoc);
+							double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc, lemmasPerDoc, wordCount, charCount);
 							String vectorKey = user + "/" + review;
 							printMahoutVector(vectorKey, allFreqs, mahoutWriter);
 
@@ -425,6 +430,8 @@ public class GetSyntacticFeatures {
 							functionPerDoc = Util.newMapFromKeySet(functionTotals.keySet(), 0.0);
 							lemmasPerDoc = new HashMap<>(100);
 							syntaxVector = new double[SYNTAX_FEATURE_COUNT];
+							wordCount = 0;
+							charCount = 0;
 						}
 
 						String word = splitLine[WORD_IDX+2];
@@ -432,6 +439,9 @@ public class GetSyntacticFeatures {
 						String dep = splitLine[DEP_IDX+2];
 						String lem = splitLine[LEM_IDX+2];
 
+						wordCount += 1;
+						charCount += word.length();
+						
 						// update syntax vector with current word
 						syntaxFeatures(word, syntaxVector);
 
@@ -464,63 +474,70 @@ public class GetSyntacticFeatures {
 	}
 
 	private double[] populateFeatureVector(double[] syntaxVector, Map<String, Double> posPerDoc,
-			Map<String, Double> parsePerDoc, Map<String, Double> functionPerDoc, Map<String, Double> lemmasPerDoc) {
+			Map<String, Double> parsePerDoc, Map<String, Double> functionPerDoc, Map<String, Double> lemmasPerDoc,
+			double wordCount, double charCount) {
 
-		int numObservedFuncWords = this.functionTotals.keySet().size();
+		// POS_TAGS.length + PARSE_LABELS.length + numObservedFuncWords + syntaxVector.length + 1
+		int numFeatures = syntaxVector.length;
+		if(POS_FREQS_ON)
+			numFeatures += POS_TAGS.length;
+		if(DEP_FREQS_ON)
+			numFeatures += PARSE_LABELS.length;
+		if(FUNC_FREQS_ON)
+			numFeatures += this.functionTotals.keySet().size();
+		if(YULE_ON)
+			numFeatures += 1;
+			
+		double[] allFreqs = new double[numFeatures];
 
-		double[] posFreqs = new double[POS_TAGS.length];
-		double[] depFreqs = new double[PARSE_LABELS.length];
-		double[] funcFreqs = new double[numObservedFuncWords]; // make this a variable?
-		double[] allFreqs = new double[POS_TAGS.length + PARSE_LABELS.length + numObservedFuncWords + syntaxVector.length + 1];
-
+		String key;
+		Double value, total;
+		double freq;
+		
 		// populate feature vector(s)
 		int i = 0;
 		if(POS_FREQS_ON){
 			for(Entry<String,Double> entry : posPerDoc.entrySet()){
-				String key = entry.getKey();
-				Double value = entry.getValue();
-				Double total = this.posTotals.get(key);
-				double freq = total != 0.0? value/total : 0.0;
-				posFreqs[i] = freq;
+				key = entry.getKey();
+				value = entry.getValue();
+				total = this.posTotals.get(key);
+				freq = total != 0.0? value/total : 0.0;
 				allFreqs[i] = freq;
 				i++;
 			}
 		}
 
-		int j = 0;
 		if(DEP_FREQS_ON){
 			for(Entry<String,Double> entry : parsePerDoc.entrySet()){
-				String key = entry.getKey();
-				Double value = entry.getValue();
-				Double total = this.parseTotals.get(key);
-				double freq = total != 0.0? value/total : 0.0;
-				depFreqs[j] = freq;
-				allFreqs[i+j] = freq;
-				j++;
+				key = entry.getKey();
+				value = entry.getValue();
+				total = this.parseTotals.get(key);
+				freq = total != 0.0? value/total : 0.0;
+				allFreqs[i] = freq;
+				i++;
 			}
 		}
 
-		int k = 0;
 		if(FUNC_FREQS_ON){
 			for(Entry<String,Double> entry : functionPerDoc.entrySet()){
-				String key = entry.getKey();
-				Double value = entry.getValue();
-				Double total = this.functionTotals.get(key);
-				double freq = total != 0.0? value/total : 0.0;
-				funcFreqs[k] = freq;
-				allFreqs[i+j+k] = freq;
-				k++;
+				key = entry.getKey();
+				value = entry.getValue();
+				total = this.functionTotals.get(key);
+				freq = total != 0.0? value/total : 0.0;
+				allFreqs[i] = freq;
+				i++;
 			}
-		}
-
-		normalizeSyntaxVector(syntaxVector);
-		for(int l = 0; l < syntaxVector.length; l++)
-		{
-			allFreqs[i+j+k+l] = syntaxVector[l];
 		}
 		
 		if(YULE_ON){
-			allFreqs[allFreqs.length-1] = calculateYuleK(lemmasPerDoc);
+			allFreqs[i] = calculateYuleK(lemmasPerDoc);
+			i++;
+		}
+
+		normalizeSyntaxVector(syntaxVector, wordCount, charCount);
+		for(int l = 0; l < syntaxVector.length; l++)
+		{
+			allFreqs[i+l] = syntaxVector[l];
 		}
 		
 		return allFreqs;
