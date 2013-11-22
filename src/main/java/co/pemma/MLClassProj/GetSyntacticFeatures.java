@@ -243,9 +243,6 @@ public class GetSyntacticFeatures {
 			syntaxVector[SPECIAL_CHARS + i] = syntaxVector[SPECIAL_CHARS + i] / chars;
 	}
 
-	//	// Yules K, frequency of once used, twice used etc words [11]
-	//	private double[] vocabularyRichness(String word)
-
 	//	/*  frequency of syntax pairs 		[789]
 	//	/	(A,B) where A is parent of B
 	//	 */
@@ -272,7 +269,7 @@ public class GetSyntacticFeatures {
 
 		// TODO move these somewhere less hard-coded
 		int startIndex = 0;
-		int numToTake = userList.size();
+		int numToTake = 1;//userList.size();
 		
 		File factorieFile = new File(FACTORIE_OUTPUT_FILE);
 		
@@ -347,6 +344,7 @@ public class GetSyntacticFeatures {
 			Map<String, Double> posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
 			Map<String, Double> parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
 			Map<String, Double> functionPerDoc = Util.newMapFromKeySet(this.functionTotals.keySet(), 0.0);
+			Map<String, Double> lemmasPerDoc = new HashMap<>(100);
 			double[] syntaxVector = new double[SYNTAX_FEATURE_COUNT];
 
 			String line;
@@ -369,7 +367,7 @@ public class GetSyntacticFeatures {
 						
 						if(!review.equals(lastReview)){
 							// write results before tabulating new results
-							double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc);
+							double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc, lemmasPerDoc);
 							String vectorKey = user + "/" + review;
 							printMahoutVector(vectorKey, allFreqs, mahoutWriter);
 
@@ -377,21 +375,27 @@ public class GetSyntacticFeatures {
 							posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
 							parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
 							functionPerDoc = Util.newMapFromKeySet(functionTotals.keySet(), 0.0);
+							lemmasPerDoc = new HashMap<>(100);
 							syntaxVector = new double[SYNTAX_FEATURE_COUNT];
 						}
 
 						String word = splitLine[WORD_IDX+2];
 						String pos = splitLine[POS_IDX+2];
 						String dep = splitLine[DEP_IDX+2];
+						String lem = splitLine[LEM_IDX+2];
 
 						// update syntax vector with current word
 						syntaxFeatures(word, syntaxVector);
 
 						posPerDoc.put(pos, posPerDoc.get(pos) + 1.0);
 						parsePerDoc.put(dep, parsePerDoc.get(dep) + 1.0);
+						
+						if(lemmasPerDoc.containsKey(lem))
+							lemmasPerDoc.put(lem, lemmasPerDoc.get(lem) + 1.0);
+						else
+							lemmasPerDoc.put(lem, 1.0);
 
 						String lowerWord = word.toLowerCase();
-
 						if (functionPosTags.contains(pos))
 							functionPerDoc.put(lowerWord, functionPerDoc.get(lowerWord) + 1.0);
 
@@ -412,14 +416,14 @@ public class GetSyntacticFeatures {
 	}
 
 	private double[] populateFeatureVector(double[] syntaxVector, Map<String, Double> posPerDoc,
-			Map<String, Double> parsePerDoc, Map<String, Double> functionPerDoc) {
+			Map<String, Double> parsePerDoc, Map<String, Double> functionPerDoc, Map<String, Double> lemmasPerDoc) {
 		
 		int numObservedFuncWords = this.functionTotals.keySet().size();
 		
 		double[] posFreqs = new double[POS_TAGS.length];
 		double[] depFreqs = new double[PARSE_LABELS.length];
 		double[] funcFreqs = new double[numObservedFuncWords]; // make this a variable?
-		double[] allFreqs = new double[POS_TAGS.length + PARSE_LABELS.length + numObservedFuncWords + syntaxVector.length];
+		double[] allFreqs = new double[POS_TAGS.length + PARSE_LABELS.length + numObservedFuncWords + syntaxVector.length + 1];
 
 		// populate feature vector(s)
 		int i = 0;
@@ -460,9 +464,30 @@ public class GetSyntacticFeatures {
 		{
 			allFreqs[i+j+k+l] = syntaxVector[l];
 		}
+		
+		allFreqs[allFreqs.length-1] = calculateYuleK(lemmasPerDoc);
+		
 		return allFreqs;
 	}
 	
+	private double calculateYuleK(Map<String, Double> lemmasPerDoc) {
+		// m1 = number of different lemmas in document (review)
+		double m1 = lemmasPerDoc.keySet().size();
+		
+		Map<Double, Double> yuleMap = Util.reverseMap(lemmasPerDoc);
+		
+		// m2 = sum of products of each observed frequency squared and number of 
+		// words with that frequency
+		double m2 = 0.0;
+		for(Entry<Double,Double> e : yuleMap.entrySet()){
+			Double freq = e.getKey();
+			Double wordCount = e.getValue();
+			m2 += freq*freq*wordCount;
+		}
+		
+		return 10000*(m2-m1)/(m1*m1);
+	}
+
 	private static void printMahoutVector(String vectorKey, double[] vector, SequenceFile.Writer mahoutWriter)
 	{
 		System.out.print(vectorKey + ":");
