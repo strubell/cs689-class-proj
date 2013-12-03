@@ -119,11 +119,11 @@ public class GetSyntacticFeatures {
 
 	public static void main(String[] args) {
 		// all
-		//setFeatures( new String[] {"ws", "wc", "l", "d", "wl", "p", "sc", "pos", "dp", "fw", "y"} );
+		setFeatures( new String[] {"ws", "wc", "l", "d", "wl", "p", "sc", "pos", "dp", "fw", "y"} );
 		
 		// just punctuation & special chars
-//		setFeatures( new String[] {"d"} );
-		setFeatures(args);
+		//setFeatures( new String[] {"d"} );
+		//setFeatures(args);
 		
 		String featuresUsed = "";
 		for (int i = 0; i < args.length; i ++) featuresUsed += " " + args[i];
@@ -411,7 +411,7 @@ public class GetSyntacticFeatures {
 			String lastUser = null;
 			String lastReview = "1";
 			String review = null;
-			int vectorClass = 0;
+			int vectorClass = 1;
 			double wordCount = 0;
 			double charCount = 0;
 			while ((line = factorieOutput.readLine()) != null) {
@@ -578,7 +578,7 @@ public class GetSyntacticFeatures {
 		for(int i = 0; i < vector.length; ++i){
 			double val = vector[i];
 			if(val != 0.0)
-				textWriter.print(i + ":" + vector[i] + " ");
+				textWriter.print(i+1 + ":" + vector[i] + " ");
 		}
 		textWriter.println();
 		
