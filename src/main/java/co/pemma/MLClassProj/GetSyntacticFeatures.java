@@ -326,7 +326,7 @@ public class GetSyntacticFeatures {
 		// TODO move these somewhere less hard-coded
 		int startIndex = 0;
 
-		int numToTake = userList.size();
+		int numToTake = 1;//userList.size();
 
 		File factorieFile = new File(FACTORIE_OUTPUT_FILE);
 
@@ -438,7 +438,8 @@ public class GetSyntacticFeatures {
 
 							wordCount = 0;
 							charCount = 0;
-							vectorClass++;
+							if(!user.equals(lastUser))
+								vectorClass++;
 						}
 
 						String word = splitLine[WORD_IDX+2];
@@ -475,6 +476,7 @@ public class GetSyntacticFeatures {
 			//			printMahoutVector(vectorKey, allFreqs, mahoutWriter);
 
 			mahoutWriter.close();
+			textWriter.close();
 		} catch (IOException e){
 			//TODO auto-generated catch block
 			e.printStackTrace();
@@ -570,9 +572,9 @@ public class GetSyntacticFeatures {
 		return 10000*(m2-m1)/(m1*m1);
 	}
 	
-	private void printTextVector(int vectorKey, double[] vector, PrintWriter textWriter) {
+	private void printTextVector(int vectorClass, double[] vector, PrintWriter textWriter) {
 		
-		textWriter.print(vectorKey  + " ");
+		textWriter.print(vectorClass  + " ");
 		for(int i = 0; i < vector.length; ++i){
 			double val = vector[i];
 			if(val != 0.0)
