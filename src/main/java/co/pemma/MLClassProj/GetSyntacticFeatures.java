@@ -118,11 +118,11 @@ public class GetSyntacticFeatures {
 
 	public static void main(String[] args) {
 		// all
-		//setFeatures( new String[] {"ws", "wc", "l", "d", "wl", "p", "sc", "pos", "dp", "fw", "y"} );
+		setFeatures( new String[] {"ws", "wc", "l", "d", "wl", "p", "sc", "pos", "dp", "fw", "y"} );
 		
 		// just punctuation & special chars
 //		setFeatures( new String[] {"d"} );
-		setFeatures(args);
+//		setFeatures(args);
 		
 		String featuresUsed = "";
 		for (int i = 0; i < args.length; i ++) featuresUsed += " " + args[i];
