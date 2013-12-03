@@ -1,6 +1,7 @@
 package co.pemma.MLClassProj;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -396,6 +397,8 @@ public class GetSyntacticFeatures {
 			FileSystem fs = FileSystem.get(config);
 			SequenceFile.Writer mahoutWriter = new SequenceFile.Writer(fs, config, path, Text.class, VectorWritable.class);
 
+			PrintWriter textWriter = Util.getPrintWriter(OUTPUT_DIR + File.separator + "textFeatures");
+			
 			// initialize per-document counts using (keys of) existing data structures
 			Map<String, Double> posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
 			Map<String, Double> parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
@@ -408,6 +411,7 @@ public class GetSyntacticFeatures {
 			String lastUser = null;
 			String lastReview = "1";
 			String review = null;
+			int vectorClass = 0;
 			double wordCount = 0;
 			double charCount = 0;
 			while ((line = factorieOutput.readLine()) != null) {
@@ -423,7 +427,8 @@ public class GetSyntacticFeatures {
 							double[] allFreqs = populateFeatureVector(syntaxVector, posPerDoc, parsePerDoc, functionPerDoc, lemmasPerDoc, wordCount, charCount);
 							String vectorKey = lastUser + "/" + lastReview;
 							printMahoutVector(vectorKey, allFreqs, mahoutWriter);
-
+							printTextVector(vectorClass, allFreqs, textWriter);
+							
 							// re-initialize data structures
 							posPerDoc = Util.newMapFromKeySet(posTags, 0.0);
 							parsePerDoc = Util.newMapFromKeySet(parseLabels, 0.0);
@@ -433,6 +438,7 @@ public class GetSyntacticFeatures {
 
 							wordCount = 0;
 							charCount = 0;
+							vectorClass++;
 						}
 
 						String word = splitLine[WORD_IDX+2];
@@ -562,6 +568,18 @@ public class GetSyntacticFeatures {
 		}
 		
 		return 10000*(m2-m1)/(m1*m1);
+	}
+	
+	private void printTextVector(int vectorKey, double[] vector, PrintWriter textWriter) {
+		
+		textWriter.print(vectorKey  + " ");
+		for(int i = 0; i < vector.length; ++i){
+			double val = vector[i];
+			if(val != 0.0)
+				textWriter.print(i + ":" + vector[i] + " ");
+		}
+		textWriter.println();
+		
 	}
 
 	private static void printMahoutVector(String vectorKey, double[] vector, SequenceFile.Writer mahoutWriter)

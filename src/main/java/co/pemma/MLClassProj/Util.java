@@ -2,16 +2,22 @@ package co.pemma.MLClassProj;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class Util {
+	
+	// Encoding to use for file IO
+	public static final String FILE_ENCODING = "UTF-8";
 	
 	/**
 	 * Creates a new Map associating values from the given keySet with the given
@@ -40,17 +46,11 @@ public class Util {
 		return newMap;
 	}
 	
+	public static PrintWriter getPrintWriter(String fileName) throws UnsupportedEncodingException, FileNotFoundException{
+		return new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileName), FILE_ENCODING));
+	}
+	
 	public static BufferedReader processSentence(String inputSentence) throws IOException{
-		
-//		try(Socket connection = new Socket("localhost", 3228)){
-//			PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(connection.getOutputStream())), true);
-//			writer.println(inputSentence);
-//			connection.shutdownOutput();
-//			return new BufferedReader(new InputStreamReader(connection.getInputStream()));	
-//		} catch (IOException e){
-//			e.printStackTrace();
-//		}
-//		return null;
 		
 		// TODO fix socket closing situation
 		// ok, actually, this socket is definitely always getting closed, Eclipse just doens't know it
