@@ -586,13 +586,6 @@ public class GetSyntacticFeatures {
 
 	private static void printMahoutVector(String vectorKey, double[] vector, SequenceFile.Writer mahoutWriter)
 	{
-		// print poopler
-//		System.out.print(vectorKey + ":");
-//		for(int i = 0; i < vector.length; ++i){
-//			System.out.print(vector[i] + " ");
-//		}
-//		System.out.println();
-
 		VectorWritable vec = new VectorWritable();
 		vec.set(new NamedVector(new DenseVector(vector), vectorKey));
 		try {
