@@ -1,0 +1,642 @@
+Running SVM-Light via cross validation on textFeatures by using 6500 training items and 1250 test items (Total number of cross-validation cycles: 10
+------------------------------------------
+Cross-validation cycle: 1
+
+Linear SVM with default parameters
+C =  1
+Reading model... (67 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.8400
+Zero/one-error on test set: 89.84% (127 correct, 1123 incorrect, 1250 total)
+C =  2
+Reading model... (66 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.4400
+Zero/one-error on test set: 91.44% (107 correct, 1143 incorrect, 1250 total)
+C =  3
+Reading model... (72 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.6800
+Zero/one-error on test set: 89.68% (129 correct, 1121 incorrect, 1250 total)
+C =  4
+Reading model... (82 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.3600
+Zero/one-error on test set: 89.36% (133 correct, 1117 incorrect, 1250 total)
+C =  5
+Reading model... (83 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 93.8400
+Zero/one-error on test set: 93.84% (77 correct, 1173 incorrect, 1250 total)
+C =  6
+Reading model... (74 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.2000
+Zero/one-error on test set: 89.20% (135 correct, 1115 incorrect, 1250 total)
+C =  7
+Reading model... (78 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.3200
+Zero/one-error on test set: 90.32% (121 correct, 1129 incorrect, 1250 total)
+C =  8
+Reading model... (83 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.9200
+Zero/one-error on test set: 87.92% (151 correct, 1099 incorrect, 1250 total)
+C =  9
+Reading model... (77 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.6800
+Zero/one-error on test set: 89.68% (129 correct, 1121 incorrect, 1250 total)
+C =  10
+Reading model... (88 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.7600
+Zero/one-error on test set: 89.76% (128 correct, 1122 incorrect, 1250 total)
+------------------------------------------
+Cross-validation cycle: 2
+
+Linear SVM with default parameters
+C =  1
+Reading model... (64 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 94.3200
+Zero/one-error on test set: 94.32% (71 correct, 1179 incorrect, 1250 total)
+C =  2
+Reading model... (73 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.8800
+Zero/one-error on test set: 88.88% (139 correct, 1111 incorrect, 1250 total)
+C =  3
+Reading model... (76 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.8000
+Zero/one-error on test set: 92.80% (90 correct, 1160 incorrect, 1250 total)
+C =  4
+Reading model... (80 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.5600
+Zero/one-error on test set: 90.56% (118 correct, 1132 incorrect, 1250 total)
+C =  5
+Reading model... (73 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.5200
+Zero/one-error on test set: 87.52% (156 correct, 1094 incorrect, 1250 total)
+C =  6
+Reading model... (80 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 86.8800
+Zero/one-error on test set: 86.88% (164 correct, 1086 incorrect, 1250 total)
+C =  7
+Reading model... (83 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.7200
+Zero/one-error on test set: 88.72% (141 correct, 1109 incorrect, 1250 total)
+C =  8
+Reading model... (86 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.2800
+Zero/one-error on test set: 91.28% (109 correct, 1141 incorrect, 1250 total)
+C =  9
+Reading model... (75 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.6800
+Zero/one-error on test set: 91.68% (104 correct, 1146 incorrect, 1250 total)
+C =  10
+Reading model... (86 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.8000
+Zero/one-error on test set: 90.80% (115 correct, 1135 incorrect, 1250 total)
+------------------------------------------
+Cross-validation cycle: 3
+
+Linear SVM with default parameters
+C =  1
+Reading model... (68 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.5200
+Zero/one-error on test set: 91.52% (106 correct, 1144 incorrect, 1250 total)
+C =  2
+Reading model... (75 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.8400
+Zero/one-error on test set: 91.84% (102 correct, 1148 incorrect, 1250 total)
+C =  3
+Reading model... (72 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.8400
+Zero/one-error on test set: 89.84% (127 correct, 1123 incorrect, 1250 total)
+C =  4
+Reading model... (79 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.7200
+Zero/one-error on test set: 90.72% (116 correct, 1134 incorrect, 1250 total)
+C =  5
+Reading model... (75 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.7600
+Zero/one-error on test set: 89.76% (128 correct, 1122 incorrect, 1250 total)
+C =  6
+Reading model... (81 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.6400
+Zero/one-error on test set: 92.64% (92 correct, 1158 incorrect, 1250 total)
+C =  7
+Reading model... (84 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.2800
+Zero/one-error on test set: 89.28% (134 correct, 1116 incorrect, 1250 total)
+C =  8
+Reading model... (80 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.4400
+Zero/one-error on test set: 87.44% (157 correct, 1093 incorrect, 1250 total)
+C =  9
+Reading model... (81 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.5600
+Zero/one-error on test set: 88.56% (143 correct, 1107 incorrect, 1250 total)
+C =  10
+Reading model... (86 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.5200
+Zero/one-error on test set: 87.52% (156 correct, 1094 incorrect, 1250 total)
+------------------------------------------
+Cross-validation cycle: 4
+
+Linear SVM with default parameters
+C =  1
+Reading model... (69 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.3200
+Zero/one-error on test set: 90.32% (121 correct, 1129 incorrect, 1250 total)
+C =  2
+Reading model... (68 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.4000
+Zero/one-error on test set: 92.40% (95 correct, 1155 incorrect, 1250 total)
+C =  3
+Reading model... (80 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 93.3600
+Zero/one-error on test set: 93.36% (83 correct, 1167 incorrect, 1250 total)
+C =  4
+Reading model... (76 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.2000
+Zero/one-error on test set: 91.20% (110 correct, 1140 incorrect, 1250 total)
+C =  5
+Reading model... (76 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.6800
+Zero/one-error on test set: 89.68% (129 correct, 1121 incorrect, 1250 total)
+C =  6
+Reading model... (75 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.8800
+Zero/one-error on test set: 90.88% (114 correct, 1136 incorrect, 1250 total)
+C =  7
+Reading model... (79 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.3600
+Zero/one-error on test set: 91.36% (108 correct, 1142 incorrect, 1250 total)
+C =  8
+Reading model... (87 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.0800
+Zero/one-error on test set: 90.08% (124 correct, 1126 incorrect, 1250 total)
+C =  9
+Reading model... (82 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.6800
+Zero/one-error on test set: 87.68% (154 correct, 1096 incorrect, 1250 total)
+C =  10
+Reading model... (86 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.3600
+Zero/one-error on test set: 91.36% (108 correct, 1142 incorrect, 1250 total)
+------------------------------------------
+Cross-validation cycle: 5
+
+Linear SVM with default parameters
+C =  1
+Reading model... (72 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.8000
+Zero/one-error on test set: 92.80% (90 correct, 1160 incorrect, 1250 total)
+C =  2
+Reading model... (68 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.9600
+Zero/one-error on test set: 92.96% (88 correct, 1162 incorrect, 1250 total)
+C =  3
+Reading model... (72 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.7200
+Zero/one-error on test set: 88.72% (141 correct, 1109 incorrect, 1250 total)
+C =  4
+Reading model... (79 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.3200
+Zero/one-error on test set: 90.32% (121 correct, 1129 incorrect, 1250 total)
+C =  5
+Reading model... (74 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 85.9200
+Zero/one-error on test set: 85.92% (176 correct, 1074 incorrect, 1250 total)
+C =  6
+Reading model... (83 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.4000
+Zero/one-error on test set: 90.40% (120 correct, 1130 incorrect, 1250 total)
+C =  7
+Reading model... (81 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.8000
+Zero/one-error on test set: 92.80% (90 correct, 1160 incorrect, 1250 total)
+C =  8
+Reading model... (79 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.6800
+Zero/one-error on test set: 87.68% (154 correct, 1096 incorrect, 1250 total)
+C =  9
+Reading model... (82 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.2800
+Zero/one-error on test set: 91.28% (109 correct, 1141 incorrect, 1250 total)
+C =  10
+Reading model... (84 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 85.9200
+Zero/one-error on test set: 85.92% (176 correct, 1074 incorrect, 1250 total)
+------------------------------------------
+Cross-validation cycle: 6
+
+Linear SVM with default parameters
+C =  1
+Reading model... (68 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.8400
+Zero/one-error on test set: 91.84% (102 correct, 1148 incorrect, 1250 total)
+C =  2
+Reading model... (77 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.4800
+Zero/one-error on test set: 90.48% (119 correct, 1131 incorrect, 1250 total)
+C =  3
+Reading model... (73 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.5600
+Zero/one-error on test set: 90.56% (118 correct, 1132 incorrect, 1250 total)
+C =  4
+Reading model... (81 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.6400
+Zero/one-error on test set: 90.64% (117 correct, 1133 incorrect, 1250 total)
+C =  5
+Reading model... (82 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.6000
+Zero/one-error on test set: 89.60% (130 correct, 1120 incorrect, 1250 total)
+C =  6
+Reading model... (75 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.0800
+Zero/one-error on test set: 88.08% (149 correct, 1101 incorrect, 1250 total)
+C =  7
+Reading model... (76 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.0000
+Zero/one-error on test set: 92.00% (100 correct, 1150 incorrect, 1250 total)
+C =  8
+Reading model... (79 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.8400
+Zero/one-error on test set: 89.84% (127 correct, 1123 incorrect, 1250 total)
+C =  9
+Reading model... (87 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.1200
+Zero/one-error on test set: 87.12% (161 correct, 1089 incorrect, 1250 total)
+C =  10
+Reading model... (79 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.4400
+Zero/one-error on test set: 89.44% (132 correct, 1118 incorrect, 1250 total)
+------------------------------------------
+Cross-validation cycle: 7
+
+Linear SVM with default parameters
+C =  1
+Reading model... (69 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.6000
+Zero/one-error on test set: 91.60% (105 correct, 1145 incorrect, 1250 total)
+C =  2
+Reading model... (71 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.8800
+Zero/one-error on test set: 88.88% (139 correct, 1111 incorrect, 1250 total)
+C =  3
+Reading model... (81 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.1200
+Zero/one-error on test set: 89.12% (136 correct, 1114 incorrect, 1250 total)
+C =  4
+Reading model... (78 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.9600
+Zero/one-error on test set: 88.96% (138 correct, 1112 incorrect, 1250 total)
+C =  5
+Reading model... (68 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.9600
+Zero/one-error on test set: 88.96% (138 correct, 1112 incorrect, 1250 total)
+C =  6
+Reading model... (76 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.8800
+Zero/one-error on test set: 88.88% (139 correct, 1111 incorrect, 1250 total)
+C =  7
+Reading model... (74 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.8000
+Zero/one-error on test set: 88.80% (140 correct, 1110 incorrect, 1250 total)
+C =  8
+Reading model... (78 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.7200
+Zero/one-error on test set: 88.72% (141 correct, 1109 incorrect, 1250 total)
+C =  9
+Reading model... (75 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.4800
+Zero/one-error on test set: 92.48% (94 correct, 1156 incorrect, 1250 total)
+C =  10
+Reading model... (78 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.0400
+Zero/one-error on test set: 89.04% (137 correct, 1113 incorrect, 1250 total)
+------------------------------------------
+Cross-validation cycle: 8
+
+Linear SVM with default parameters
+C =  1
+Reading model... (70 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.4400
+Zero/one-error on test set: 91.44% (107 correct, 1143 incorrect, 1250 total)
+C =  2
+Reading model... (67 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.7600
+Zero/one-error on test set: 89.76% (128 correct, 1122 incorrect, 1250 total)
+C =  3
+Reading model... (80 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.2400
+Zero/one-error on test set: 92.24% (97 correct, 1153 incorrect, 1250 total)
+C =  4
+Reading model... (74 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.0800
+Zero/one-error on test set: 92.08% (99 correct, 1151 incorrect, 1250 total)
+C =  5
+Reading model... (71 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.2400
+Zero/one-error on test set: 92.24% (97 correct, 1153 incorrect, 1250 total)
+C =  6
+Reading model... (85 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.7600
+Zero/one-error on test set: 89.76% (128 correct, 1122 incorrect, 1250 total)
+C =  7
+Reading model... (81 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.9600
+Zero/one-error on test set: 88.96% (138 correct, 1112 incorrect, 1250 total)
+C =  8
+Reading model... (91 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 94.2400
+Zero/one-error on test set: 94.24% (72 correct, 1178 incorrect, 1250 total)
+C =  9
+Reading model... (80 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.4800
+Zero/one-error on test set: 88.48% (144 correct, 1106 incorrect, 1250 total)
+C =  10
+Reading model... (89 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.7200
+Zero/one-error on test set: 92.72% (91 correct, 1159 incorrect, 1250 total)
+------------------------------------------
+Cross-validation cycle: 9
+
+Linear SVM with default parameters
+C =  1
+Reading model... (67 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.2800
+Zero/one-error on test set: 91.28% (109 correct, 1141 incorrect, 1250 total)
+C =  2
+Reading model... (72 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.7600
+Zero/one-error on test set: 91.76% (103 correct, 1147 incorrect, 1250 total)
+C =  3
+Reading model... (74 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.6400
+Zero/one-error on test set: 88.64% (142 correct, 1108 incorrect, 1250 total)
+C =  4
+Reading model... (75 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 86.0000
+Zero/one-error on test set: 86.00% (175 correct, 1075 incorrect, 1250 total)
+C =  5
+Reading model... (75 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.3200
+Zero/one-error on test set: 90.32% (121 correct, 1129 incorrect, 1250 total)
+C =  6
+Reading model... (81 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.5200
+Zero/one-error on test set: 91.52% (106 correct, 1144 incorrect, 1250 total)
+C =  7
+Reading model... (76 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.7200
+Zero/one-error on test set: 92.72% (91 correct, 1159 incorrect, 1250 total)
+C =  8
+Reading model... (83 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 92.4800
+Zero/one-error on test set: 92.48% (94 correct, 1156 incorrect, 1250 total)
+C =  9
+Reading model... (88 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.3600
+Zero/one-error on test set: 87.36% (158 correct, 1092 incorrect, 1250 total)
+C =  10
+Reading model... (82 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.6400
+Zero/one-error on test set: 90.64% (117 correct, 1133 incorrect, 1250 total)
+------------------------------------------
+Cross-validation cycle: 10
+
+Linear SVM with default parameters
+C =  1
+Reading model... (66 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.7600
+Zero/one-error on test set: 89.76% (128 correct, 1122 incorrect, 1250 total)
+C =  2
+Reading model... (66 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.9200
+Zero/one-error on test set: 89.92% (126 correct, 1124 incorrect, 1250 total)
+C =  3
+Reading model... (86 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.4400
+Zero/one-error on test set: 87.44% (157 correct, 1093 incorrect, 1250 total)
+C =  4
+Reading model... (73 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 86.6400
+Zero/one-error on test set: 86.64% (167 correct, 1083 incorrect, 1250 total)
+C =  5
+Reading model... (81 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 91.5200
+Zero/one-error on test set: 91.52% (106 correct, 1144 incorrect, 1250 total)
+C =  6
+Reading model... (75 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.5200
+Zero/one-error on test set: 89.52% (131 correct, 1119 incorrect, 1250 total)
+C =  7
+Reading model... (82 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 88.2400
+Zero/one-error on test set: 88.24% (147 correct, 1103 incorrect, 1250 total)
+C =  8
+Reading model... (78 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 89.7600
+Zero/one-error on test set: 89.76% (128 correct, 1122 incorrect, 1250 total)
+C =  9
+Reading model... (87 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 90.6400
+Zero/one-error on test set: 90.64% (117 correct, 1133 incorrect, 1250 total)
+C =  10
+Reading model... (86 support vectors read) done.
+Scanning examples...done
+Reading examples into memory...100..200..300..400..500..600..700..800..900..1000..1100..1200..OK. (1250 examples read)
+ (1250 examples) Average loss on test set: 87.8400
+Zero/one-error on test set: 87.84% (152 correct, 1098 incorrect, 1250 total)
+Done.

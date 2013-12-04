@@ -122,8 +122,9 @@ public class GetSyntacticFeatures {
 		setFeatures( new String[] {"ws", "wc", "l", "d", "wl", "p", "sc", "pos", "dp", "fw", "y"} );
 		
 		// just punctuation & special chars
-		//setFeatures( new String[] {"d"} );
-		//setFeatures(args);
+//		setFeatures( new String[] {"d"} );
+//		setFeatures(args);
+
 		
 		String featuresUsed = "";
 		for (int i = 0; i < args.length; i ++) featuresUsed += " " + args[i];
@@ -326,7 +327,7 @@ public class GetSyntacticFeatures {
 		// TODO move these somewhere less hard-coded
 		int startIndex = 0;
 
-		int numToTake = 1;//userList.size();
+		int numToTake = userList.size();
 
 		File factorieFile = new File(FACTORIE_OUTPUT_FILE);
 

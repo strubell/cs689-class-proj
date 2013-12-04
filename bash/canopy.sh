@@ -3,13 +3,14 @@
 #
 #
 
-if [ $# -le 1 ]; then
-	echo "not enough args \n ./cluster.sh [input dir] [K] "
+if [ $# -le 2 ]; then
+	echo "not enough args \n ./cluster.sh [input dir] [T1] [T2] "
 	exit 1 
 fi
 
 INPUT=$1
-K=$2
+T1=$2
+T2=$3
 MAHOUT_DIR=/home/pv/Documents/mahout/bin
 WRK_DIR=/tmp/cs689/
 
@@ -35,14 +36,14 @@ cd ${WRK_DIR}
 #echo "#################################################"
 
 # generate canopy clusters
-#${MAHOUT_DIR}/mahout canopy -i ${INPUT} -o canopy -dm org.apache.mahout.common.distance.CosineDistanceMeasure -t1 .1 -t2 .2 -cl 
+${MAHOUT_DIR}/mahout canopy -i ${INPUT} -o canopy -dm org.apache.mahout.common.distance.CosineDistanceMeasure -t1 $T1 -t2 $T2 -cl -ow 
 
 
 # run kmeans clustering on data vectors
 echo "#################################################"
 echo "#############  Running K Means  #################"
 echo "#################################################"
-${MAHOUT_DIR}/mahout kmeans -i ${INPUT} -o  result -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1000 -cd 0.1 -k ${K} -ow -c centroids -cl
+${MAHOUT_DIR}/mahout kmeans -i ${INPUT} -o  result -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1000 -cd 0.1 -ow -c canopy/clusters-0-final -cl
 echo "#################################################"
 echo "#################  Done  ########################"
 echo "#################################################"
