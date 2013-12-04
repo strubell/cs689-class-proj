@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,wasysym}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{chngpage}
+\usepackage{url}
+\usepackage{subfigure}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage[color=blue!40]{todonotes}
+\usepackage[protrusion=true,expansion,kerning]{microtype}
+\usepackage{natbib}
+
+% to adjust margins:
+\topmargin=-0.25in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.25in
+\textheight=8.5in
+\headsep=0.25in
+
+% homework specific information
+\newcommand{\hmwkTitle}{CS689 Final Project}
+\newcommand{\hmwkDueDate}{December 6, 2013}
+\newcommand{\hmwkClass}{}
+\newcommand{\hmwkClassInstructor}{}
+\newcommand{\hmwkAuthorName}{Strubell, Verga}
+
+% header and footer
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName}
+\chead{\hmwkTitle}
+\rhead{\hmwkDueDate}   
+\lfoot{}
+\cfoot{}
+\rfoot{\emph{Page\ \thepage\ of\ \pageref{LastPage}}}                          
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\makeatletter
+\newenvironment{tablehere}
+  {\def\@captype{table}}
+  {}
+
+\newenvironment{figurehere}
+  {\def\@captype{figure}}
+  {}
+\makeatother
+
+%\renewcommand{\bibsection}{\subsubsection*{\refname}}
+
+% Make title 
+\title{
+\LARGE\bf Author Attribution of Yelp Reviews \\
+\date{}
+\author{ Emma Strubell \and Patrick Verga}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Abstract goes here.
+\end{abstract}
+
+\thispagestyle{fancy}
+
+\begin{multicols}{2}
+
+\section{Introduction}
+
+\section{Dataset}
+
+\section{Methods}																																	
+																		
+\section{Results}
+
+\section{Discussion}
+
+\bibliography{final_report}
+\bibliographystyle{unsrt}
+
+\end{multicols}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
